@@ -1,0 +1,24 @@
+[
+  {
+    "id": "31000808-df76-49ae-ad99-fe9c5dbd33d2",
+    "method": "GET",
+    "endpoint": "/v3/users",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "message": "text"
+    }
+  },
+  {
+    "id": "38146432-455d-4c73-805c-f1c9f2f712d4",
+    "method": "GET",
+    "endpoint": "/v3/users",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {}
+  }
+]

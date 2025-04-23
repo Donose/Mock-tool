@@ -1,0 +1,12 @@
+
+**/node_modules/
+
+
+**/npm-lock.yaml
+
+
+*.log
+
+
+.DS_Store
+Thumbs.db
