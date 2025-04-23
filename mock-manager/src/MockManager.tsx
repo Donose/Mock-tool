@@ -236,6 +236,7 @@ const MockManager = () => {
               <textarea
                 id="headers"
                 name="headers"
+                placeholder='e.g. { "Content-Type": "application/json" }'
                 value={formData.headers}
                 onChange={handleInputChange}
                 rows={3}
