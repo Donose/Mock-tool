@@ -277,6 +277,9 @@ const MockManager = () => {
           </div>
         </div>
         <div className="form-actions">
+          <button type="button" className="import-button" onClick={() => alert("NOT IMPLEMENTED")}>
+            Import Mock Placeholder
+          </button>
           <button type="submit">{editingId ? "Update Mock" : "Add Mock"}</button>
 
           {editingId && (
@@ -285,13 +288,7 @@ const MockManager = () => {
               className="cancel-button"
               onClick={() => {
                 setEditingId(null);
-                setFormData({
-                  method: "GET",
-                  endpoint: "",
-                  status: 200,
-                  body: "",
-                  headers: "",
-                });
+                setFormData(initialFormData);
               }}
             >
               Cancel Edit
@@ -345,7 +342,11 @@ const MockManager = () => {
               <button className="delete-button" onClick={() => deleteMock(mock.id)}>
                 Delete
               </button>
-              <button type="button" className="export-button">
+              <button
+                type="button"
+                className="export-button"
+                onClick={() => alert("NOT IMPLEMENTED")}
+              >
                 Export Placeholder
               </button>
             </div>
