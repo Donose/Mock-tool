@@ -194,7 +194,7 @@ const MockManager = () => {
               npm run dev
             </pre>
             <p>
-              Inside the <code>mock-manager</code> folder
+              Inside the <code>mock-api-server</code> folder
             </p>
           </div>
         )}
