@@ -80,7 +80,6 @@ app.get("/__health", (req, res) => {
 const handleMockRequest: RequestHandler = (req, res) => {
   const matched = mockRules.find(
     (m) =>
-      m.method.toUpperCase() === req.method &&
       m.endpoint === req.path
   );
 
