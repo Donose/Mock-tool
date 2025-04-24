@@ -20,7 +20,7 @@ cd mock-manager
 npm install
 
 ## Run backend mock server
-cd mock-manager
+cd mock-api-server
 npm run dev
 
 ## Run frontend mock manager
