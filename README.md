@@ -16,11 +16,11 @@ A local mock-server and web UI for creating, editing, deleting and persisting HT
 cd mock-api-server
 npm install
 
-cd ../mock-manager
+cd mock-manager
 npm install
 
 ## Run backend mock server
-cd mock-api-server
+cd mock-manager
 npm run dev
 
 ## Run frontend mock manager
