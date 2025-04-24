@@ -156,6 +156,14 @@ const MockManager = () => {
   };
   return (
     <div className="mock-manager">
+      <div className="api-doc-link" style={{ textAlign: "right", marginBottom: "1rem" }}>
+        <a
+          href="https://apidoc.horizon.ubisoft.org/standard-client-profiles?toolMeta=%257B%2522route%2522%253A%2522%2522%257D"
+          target="_blank"
+        >
+          API Documentation
+        </a>
+      </div>
       <div style={{ textAlign: "center", marginBottom: "1rem" }}>
         <button
           onClick={checkServerStatus}
@@ -222,9 +230,7 @@ const MockManager = () => {
                 name="endpoint"
                 placeholder="/v3/something"
                 value={formData.endpoint}
-                onChange={(e) =>
-                  setFormData({ ...formData, endpoint: e.target.value.toLowerCase() })
-                }
+                onChange={(e) => setFormData({ ...formData, endpoint: e.target.value })}
                 onBlur={(e) => setFormData({ ...formData, endpoint: e.target.value.trim() })}
               ></input>
             </div>
@@ -281,7 +287,17 @@ const MockManager = () => {
           <button type="button" className="import-button" onClick={() => alert("NOT IMPLEMENTED")}>
             Import Mock Placeholder
           </button>
-          <button type="submit">{editingId ? "Update Mock" : "Add Mock"}</button>
+          <button
+            type="submit"
+            onClick={(e) => {
+              if (!formData.endpoint) {
+                e.preventDefault();
+                alert("Endpoint cannot be empty");
+              }
+            }}
+          >
+            {editingId ? "Update Mock" : "Add Mock"}
+          </button>
 
           {editingId && (
             <button
@@ -304,9 +320,7 @@ const MockManager = () => {
         {mocks.map((mock) => (
           <li key={mock.id} className="mock-item">
             <div className="mock-details">
-              <span className={`method-badge method-${mock.method.toLowerCase()}`}>
-                {mock.method}
-              </span>
+              <span className={`method-badge method-${mock.method}`}>{mock.method}</span>
               <span className="endpoint">{mock.endpoint}</span>
               <span className={`status-code status-${Math.floor(mock.status / 100)}xx`}>
                 {mock.status}

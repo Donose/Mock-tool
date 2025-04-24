@@ -26,6 +26,15 @@ h3 {
   cursor: pointer;
   transition: background 0.2s ease, transform 0.1s ease;
 }
+.api-docs-link a {
+  color: #0070f3;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.api-docs-link a:hover {
+  text-decoration: underline;
+}
+
 /* === Form Layout === */
 .mock-form {
   display: flex;
