@@ -61,7 +61,26 @@ const MockManager = () => {
 
     loadMocks();
   }, []);
-  // inside MockManager, right after your useState hooks:
+
+  const formatJsonField = (
+    value: string,
+    update: (formatted: string) => void,
+    onError?: (message: string) => void
+  ) => {
+    const trimmed = value.trim();
+
+    if (trimmed === "") return;
+    try {
+      const parsed = JSON.parse(value);
+      const pretty = JSON.stringify(parsed, null, 2);
+      update(pretty);
+    } catch (err) {
+      console.error("Error formatting JSON:", err);
+      if (onError) {
+        onError("Invalid JSON");
+      }
+    }
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
@@ -242,10 +261,17 @@ const MockManager = () => {
               <textarea
                 id="headers"
                 name="headers"
-                placeholder='e.g. { "Content-Type": "application/json" }'
+                placeholder="Paste away, should be formatted automatically"
                 value={formData.headers}
                 onChange={handleInputChange}
-                rows={3}
+                onBlur={() =>
+                  formatJsonField(
+                    formData.headers,
+                    (formatted) => setFormData((prev) => ({ ...prev, headers: formatted })),
+                    (message) => alert(message)
+                  )
+                }
+                rows={4}
               />
             </div>
           </div>
@@ -256,9 +282,16 @@ const MockManager = () => {
               <textarea
                 id="body"
                 name="body"
-                placeholder='e.g. {\"token\": \"userData\"} or plain text'
+                placeholder="Paste away, should be formatted automatically"
                 value={formData.body}
                 onChange={handleInputChange}
+                onBlur={() =>
+                  formatJsonField(
+                    formData.headers,
+                    (formatted) => setFormData((prev) => ({ ...prev, headers: formatted })),
+                    (message) => alert(message)
+                  )
+                }
                 rows={4}
               />
             </div>
