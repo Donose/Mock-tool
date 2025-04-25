@@ -15,9 +15,21 @@ type MockRule = {
   status: number;
   headers?: Record<string, string>;
   body?: any;
+  active:boolean
 };
 
 let mockRules: MockRule[] = [];
+
+function matchRule(rule:MockRule, path:string, method:string){
+ if (rule.method !==method) return false;
+ 
+ const wildcard = rule.endpoint.indexOf("**");
+ if (wildcard === -1) return rule.endpoint === path;
+
+ const prefix = rule.endpoint.slice(0, wildcard);
+ const suffix = rule.endpoint.slice(wildcard + 2);
+ return path.startsWith(prefix) && path.endsWith(suffix);
+}
 
 const loadMocks = async () => {
   try{
@@ -47,11 +59,22 @@ app.get("/__mocks", (req: Request, res: Response) => {
 });
 
 app.post("/__mocks", async (req: Request, res: Response) => {
-  const newMock = req.body as MockRule;
+  const newMock = {...req.body, active:true} as MockRule;
   mockRules.push(newMock);
   await saveMocks();
   res.status(201).json(newMock);
 });
+
+app.patch("/__mocks/:id", async (req: Request, res: Response) => {
+  const rule = mockRules.find(r=> r.id === req.params.id);
+  if (typeof req.body.active !== "boolean") {
+    return res.status(400).send({ error: "active flag missing or invalid" });
+  }
+
+  rule.active = req.body.active;
+  await saveMocks();
+  res.json(rule);
+})
 
 app.delete("/__mocks/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -78,17 +101,15 @@ app.get("/__health", (req, res) => {
 });
 
 const handleMockRequest: RequestHandler = (req, res) => {
-  const matched = mockRules.find(
-    (m) =>
-      m.endpoint === req.path
+  const matched = mockRules.find(r =>
+    r.active &&                                
+    matchRule(r, req.path, req.method)       
   );
 
   if (matched) {
     res.status(matched.status);
     if (matched.headers) {
-      for (const [key, value] of Object.entries(matched.headers)) {
-        res.setHeader(key, value);
-      }
+      for (const [k, v] of Object.entries(matched.headers)) res.setHeader(k, v);
     }
     res.send(matched.body);
     return;

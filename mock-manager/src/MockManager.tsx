@@ -9,6 +9,7 @@ interface Mock {
   status: number;
   headers?: Record<string, string>;
   body?: any;
+  active: boolean;
 }
 
 const MockManager = () => {
@@ -82,6 +83,15 @@ const MockManager = () => {
     }
   };
 
+  const toggleMockActive = async (id: string, currentlyActive: boolean) => {
+    await fetch(`http://localhost:4000/__mocks/${id}`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ active: !currentlyActive }),
+    });
+    setMocks((prev) => prev.map((m) => (m.id === id ? { ...m, active: !currentlyActive } : m)));
+  };
+
   const handleInputChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
@@ -143,6 +153,7 @@ const MockManager = () => {
         status: formData.status,
         headers: parseHeaders,
         body: parseBody,
+        active: true,
       };
       try {
         const response = await fetch("http://localhost:4000/__mocks", {
@@ -352,6 +363,14 @@ const MockManager = () => {
       <ul className="mock-list">
         {mocks.map((mock) => (
           <li key={mock.id} className="mock-item">
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={mock.active}
+                onChange={() => toggleMockActive(mock.id, mock.active)}
+              />
+              <span className="slider"></span>
+            </label>
             <div className="mock-details">
               <span className={`method-badge method-${mock.method}`}>{mock.method}</span>
               <span className="endpoint">{mock.endpoint}</span>
@@ -389,13 +408,6 @@ const MockManager = () => {
 
               <button className="delete-button" onClick={() => deleteMock(mock.id)}>
                 Delete
-              </button>
-              <button
-                type="button"
-                className="export-button"
-                onClick={() => alert("NOT IMPLEMENTED")}
-              >
-                Export Placeholder
               </button>
             </div>
 
