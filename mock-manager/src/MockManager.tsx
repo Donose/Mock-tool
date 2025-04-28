@@ -369,7 +369,9 @@ const MockManager = () => {
                 checked={mock.active}
                 onChange={() => toggleMockActive(mock.id, mock.active)}
               />
-              <span className="slider"></span>
+              <span className="slider">
+                <span className="switch-label">{mock.active === true ? "ON" : "OFF"}</span>
+              </span>
             </label>
             <div className="mock-details">
               <span className={`method-badge method-${mock.method}`}>{mock.method}</span>
