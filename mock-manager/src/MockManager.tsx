@@ -1,6 +1,8 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import React, { useEffect, useState } from "react";
 import "./MockManager.css";
+import "./utils/utils.ts";
+import { generateTransactionTime } from "./utils/utils.ts";
 
 interface Mock {
   id: string;
@@ -9,6 +11,8 @@ interface Mock {
   status: number;
   headers?: Record<string, string>;
   body?: any;
+  transactionId?: string;
+  transactionTime?: string;
   active: boolean;
 }
 
@@ -16,6 +20,7 @@ const MockManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [serverStatus, setServerStatus] = useState<"online" | "offline" | "checking">("checking");
+  const [includeTimestamp, setIncludeTimestamp] = useState(false);
 
   const initialFormData = {
     method: "GET",
@@ -121,6 +126,21 @@ const MockManager = () => {
       parseBody = formData.body.trim() ? JSON.parse(formData.body) : undefined;
     } catch {
       parseBody = formData.body.trim();
+    }
+    if (includeTimestamp) {
+      if (typeof parseBody === "object" && parseBody !== null) {
+        parseBody.transactionTime = generateTransactionTime();
+      } else if (typeof parseBody === "string" && parseBody.trim() === "") {
+        parseBody = { transactionTime: generateTransactionTime() };
+      } else if (
+        typeof parseBody === "string" ||
+        typeof parseBody === "number" ||
+        typeof parseBody === "boolean"
+      ) {
+        parseBody = { value: parseBody, transactionTime: generateTransactionTime() };
+      } else {
+        parseBody = { transactionTime: generateTransactionTime() };
+      }
     }
     if (editingId) {
       try {
@@ -308,6 +328,15 @@ const MockManager = () => {
             </div>
           </div>
           <div className="form-group-pair">
+            <span className="form-label-column">TimeStamp</span>
+            <div className="checkbox">
+              <input
+                type="checkbox"
+                id="timestamp"
+                checked={includeTimestamp}
+                onChange={() => setIncludeTimestamp(!includeTimestamp)}
+              />
+            </div>
             <div className="form-label-column">Status Code:</div>
             <div className="form-input-column">
               <input
@@ -355,6 +384,26 @@ const MockManager = () => {
               Cancel Edit
             </button>
           )}
+        </div>
+      </form>
+      <form>
+        <h3> Third Party Token Mock</h3>
+        <div className="mock-form">
+          <button type="button" className="button-ps4">
+            PS4
+          </button>
+          <button type="button" className="button-ps5">
+            PS5
+          </button>
+          <button type="button" className="button-xbox">
+            XBX
+          </button>
+          <button type="button" className="button-xbox">
+            XB1
+          </button>
+          <button type="button" className="button-switch">
+            Switch
+          </button>
         </div>
       </form>
 

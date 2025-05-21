@@ -15,10 +15,13 @@ type MockRule = {
   status: number;
   headers?: Record<string, string>;
   body?: any;
+  transactionId?: string
+  transactionTime?:string
   active:boolean
 };
 
 let mockRules: MockRule[] = [];
+
 
 function matchRule(rule:MockRule, path:string, method:string){
  if (rule.method !==method) return false;
@@ -112,10 +115,12 @@ const handleMockRequest: RequestHandler = (req, res) => {
       for (const [k, v] of Object.entries(matched.headers)) res.setHeader(k, v);
     }
     res.send(matched.body);
+    console.log(`Mocked ${req.method} ${req.path} with status ${matched.status}`);
     return;
   }
 
   res.status(404).send({ error: "No mock matched" });
+  console.log(`No mock matched for ${req.method} ${req.path}`);
 };
 
 app.all("*", handleMockRequest);
