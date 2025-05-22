@@ -3,24 +3,15 @@ import React, { useEffect, useState } from "react";
 import "./MockManager.css";
 import "./utils/utils.ts";
 import { generateTransactionTime } from "./utils/utils.ts";
-
-interface Mock {
-  id: string;
-  method: string;
-  endpoint: string;
-  status: number;
-  headers?: Record<string, string>;
-  body?: any;
-  transactionId?: string;
-  transactionTime?: string;
-  active: boolean;
-}
+import { PLATFORM_TEMPLATES } from "./Template.ts";
+import { Mock } from "./types.ts";
 
 const MockManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
   const [expandedId, setExpandedId] = useState<string | null>(null);
   const [serverStatus, setServerStatus] = useState<"online" | "offline" | "checking">("checking");
   const [includeTimestamp, setIncludeTimestamp] = useState(false);
+  const [importMessage, setImportantMessage] = useState<string | null>(null);
 
   const initialFormData = {
     method: "GET",
@@ -51,6 +42,13 @@ const MockManager = () => {
     }, 10000);
     return () => clearInterval(interval);
   }, []);
+
+  useEffect(() => {
+    if (importMessage) {
+      const timer = setTimeout(() => setImportantMessage(null), 5000);
+      return () => clearTimeout(timer);
+    }
+  }, [importMessage]);
 
   useEffect(() => {
     const loadMocks = async () => {
@@ -203,6 +201,41 @@ const MockManager = () => {
       console.error("Error deleting mock:", e);
       alert("Could not delete mock—make sure the server is running");
     }
+  };
+  const deleteAllMocks = async () => {
+    if (!window.confirm("Are you sure you want to delete all mocks?")) return;
+    for (const mock of mocks) {
+      try {
+        await fetch(`http://localhost:4000/__mocks/${mock.id}`, { method: "DELETE" });
+      } catch (e) {
+        console.error("Error deleting mock:", e);
+      }
+    }
+    setMocks([]);
+  };
+  const importTemplateMocks = async (platform: string) => {
+    const templateMocks = PLATFORM_TEMPLATES[platform];
+    if (!templateMocks) return;
+    for (const mock of templateMocks) {
+      try {
+        const response = await fetch("http://localhost:4000/__mocks", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(mock),
+        });
+        if (!response.ok) throw new Error("Failed to add mock");
+        const createdMock: Mock = await response.json();
+        setMocks((prev) => [...prev, createdMock]);
+      } catch (err) {
+        console.error("Error adding mock:", err);
+      }
+    }
+  };
+  const handleClick = async (platform: string) => {
+    await importTemplateMocks(platform);
+    setImportantMessage(
+      `Imported ${platform} template mocks! Please add &&token = x=somestring as parameter in the URL! Modify GET from external body with the country/age/email you need.`
+    );
   };
   return (
     <div className="mock-manager">
@@ -389,25 +422,38 @@ const MockManager = () => {
       <form>
         <h3> Third Party Token Mock</h3>
         <div className="mock-form">
-          <button type="button" className="button-ps4">
+          <button type="button" className="button-ps4" onClick={() => handleClick("PS4")}>
             PS4
           </button>
-          <button type="button" className="button-ps5">
+          <button type="button" className="button-ps5" onClick={() => handleClick("PS5")}>
             PS5
           </button>
-          <button type="button" className="button-xbox">
+          <button type="button" className="button-xbox" onClick={() => handleClick("XBX")}>
             XBX
           </button>
-          <button type="button" className="button-xbox">
+          <button type="button" className="button-xbox" onClick={() => handleClick("XB1")}>
             XB1
           </button>
-          <button type="button" className="button-switch">
+          <button type="button" className="button-switch" onClick={() => handleClick("Switch")}>
             Switch
           </button>
+          {importMessage && (
+            <div style={{ marginTop: "1rem", color: "#00c776" }}>{importMessage}</div>
+          )}
         </div>
       </form>
 
       <h3>Active Mocks</h3>
+      {mocks.length > 0 && (
+        <button
+          type="button"
+          className="delete-all-button"
+          style={{ marginBottom: "1rem", background: "#ff5555", color: "#fff" }}
+          onClick={deleteAllMocks}
+        >
+          Delete All Mocks
+        </button>
+      )}
       {mocks.length === 0 && <p>No mocks defined yet</p>}
       <ul className="mock-list">
         {mocks.map((mock) => (
