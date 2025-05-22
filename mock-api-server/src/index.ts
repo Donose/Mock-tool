@@ -3,10 +3,12 @@ import cors from "cors";
 import { readFile, writeFile } from "fs/promises";
 import path from "path";
 import { fileURLToPath } from "url";
+import {createProxyMiddleware} from 'http-proxy-middleware';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 const MOCK_FILE = path.join(__dirname, "__mocks.json");
+const REAL_API_URL = "https://uat-public-ubiservices.ubi.com";
 
 type MockRule = {
   id: string;
@@ -22,16 +24,44 @@ type MockRule = {
 
 let mockRules: MockRule[] = [];
 
+//rerouting to real call not going to happen :(
+const proxy = createProxyMiddleware({
+  target: REAL_API_URL,
+  changeOrigin: true,
+  on: {
+    proxyReq: (proxyReq, req, res) => {
+      Object.entries(req.headers).forEach(([key, value]) => {
+        if (value) proxyReq.setHeader(key, value as string);
+      });
 
-function matchRule(rule:MockRule, path:string, method:string){
+    }
+  }
+});
+
+function matchRule(rule:MockRule, path:string, method:string, query: any ={}){
  if (rule.method !==method) return false;
  
- const wildcard = rule.endpoint.indexOf("**");
- if (wildcard === -1) return rule.endpoint === path;
+ const [rulePath, ruleQueryString] = rule.endpoint.split("?");
+  const wildcard = rulePath.indexOf("**");
+  let pathMatch = false;
+  if (wildcard === -1) {
+    pathMatch = rulePath === path;
+  } else {
+    const prefix = rulePath.slice(0, wildcard);
+    const suffix = rulePath.slice(wildcard + 2);
+    pathMatch = path.startsWith(prefix) && path.endsWith(suffix);
+  }
 
- const prefix = rule.endpoint.slice(0, wildcard);
- const suffix = rule.endpoint.slice(wildcard + 2);
- return path.startsWith(prefix) && path.endsWith(suffix);
+  if (!pathMatch) return false;
+
+  if (ruleQueryString) {
+    const ruleParams = Object.fromEntries(new URLSearchParams(ruleQueryString));
+    for (const [k, v] of Object.entries(ruleParams)) {
+      if (query[k] !== v) return false;
+    }
+  }
+
+  return true;
 }
 
 const loadMocks = async () => {
@@ -103,11 +133,12 @@ app.get("/__health", (req, res) => {
   res.send({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-const handleMockRequest: RequestHandler = (req, res) => {
-  const matched = mockRules.find(r =>
-    r.active &&                                
-    matchRule(r, req.path, req.method)       
+const handleMockRequest: RequestHandler = (req, res, next) => {
+
+  const anyMock = mockRules.find(r =>
+    matchRule(r, req.path, req.method, req.query)
   );
+  const matched = anyMock && anyMock.active ? anyMock : undefined;
 
   if (matched) {
     res.status(matched.status);
@@ -119,11 +150,19 @@ const handleMockRequest: RequestHandler = (req, res) => {
     return;
   }
 
+  if (anyMock && !anyMock.active) {
+
+    console.log(`Mock for ${req.method} ${req.path} is inactive, proxying to real API`);
+    res.status(401).send({ error: "Mock is inactive" });
+    return next();
+  }
+
+
   res.status(404).send({ error: "No mock matched" });
   console.log(`No mock matched for ${req.method} ${req.path}`);
 };
 
-app.all("*", handleMockRequest);
+app.all("*", handleMockRequest, proxy);
 
 const startServer = async () => {
   await loadMocks();
