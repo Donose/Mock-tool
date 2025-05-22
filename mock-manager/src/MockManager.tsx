@@ -239,20 +239,17 @@ const MockManager = () => {
   };
   return (
     <div className="mock-manager">
-      <div className="api-doc-link" style={{ textAlign: "right", marginBottom: "1rem" }}>
+      <div className="api-doc-link">
         <a
           href="https://apidoc.horizon.ubisoft.org/standard-client-profiles?toolMeta=%257B%2522route%2522%253A%2522%2522%257D"
           target="_blank"
+          rel="noopener noreferrer"
         >
           API Documentation
         </a>
       </div>
-      <div style={{ textAlign: "center", marginBottom: "1rem" }}>
-        <button
-          onClick={checkServerStatus}
-          className="toggle-details-button"
-          style={{ backgroundColor: serverStatus === "online" ? "#00c776" : "#555" }}
-        >
+      <div className="server-status-container">
+        <button onClick={checkServerStatus} className={`toggle-details-button ${serverStatus}`}>
           {serverStatus === "checking"
             ? "Checking Server..."
             : serverStatus === "online"
@@ -260,22 +257,13 @@ const MockManager = () => {
             : "Server Offline "}
         </button>
         {serverStatus === "offline" && (
-          <div style={{ marginTop: "0.5rem", fontSize: "0.9rem", color: "#ff8080" }}>
+          <div className="server-offline-message">
             <p>
               The mock server is not running.
               <br />
               Start it by running:
             </p>
-            <pre
-              style={{
-                backgroundColor: "#1e1e1e",
-                padding: "0.5rem 1rem",
-                borderRadius: "6px",
-                display: "inline-block",
-              }}
-            >
-              npm run dev
-            </pre>
+            <pre className="server-offline-pre">npm run dev</pre>
             <p>
               Inside the <code>mock-api-server</code> folder
             </p>
@@ -286,7 +274,6 @@ const MockManager = () => {
       <h1>Mock API Manager</h1>
       <form className="mock-form" onSubmit={handleSubmit}>
         <h3>Add new Mock</h3>
-
         <div className="form-group-pair">
           <div className="form-label-column">Method:</div>
           <div className="form-input-column">
@@ -303,7 +290,6 @@ const MockManager = () => {
               <option value="DELETE">DELETE</option>
             </select>
           </div>
-
           <div className="form-group-pair">
             <div className="form-label-column">Endpoint Path:</div>
             <div className="form-input-column">
@@ -318,7 +304,6 @@ const MockManager = () => {
               ></input>
             </div>
           </div>
-
           <div className="form-group-pair">
             <div className="form-label-column">Response Headers (JSON):</div>
             <div className="form-input-column">
@@ -339,7 +324,6 @@ const MockManager = () => {
               />
             </div>
           </div>
-
           <div className="form-group-pair">
             <div className="form-label-column">Response Body (JSON or text)</div>
             <div className="form-input-column">
@@ -361,7 +345,7 @@ const MockManager = () => {
             </div>
           </div>
           <div className="form-group-pair">
-            <span className="form-label-column">TimeStamp</span>
+            <span className="form-label-column">Transaction Time</span>
             <div className="checkbox">
               <input
                 type="checkbox"
@@ -390,9 +374,6 @@ const MockManager = () => {
           </div>
         </div>
         <div className="form-actions">
-          <button type="button" className="import-button" onClick={() => alert("NOT IMPLEMENTED")}>
-            Import Mock Placeholder
-          </button>
           <button
             type="submit"
             onClick={(e) => {
@@ -404,7 +385,6 @@ const MockManager = () => {
           >
             {editingId ? "Update Mock" : "Add Mock"}
           </button>
-
           {editingId && (
             <button
               type="button"
@@ -437,24 +417,17 @@ const MockManager = () => {
           <button type="button" className="button-switch" onClick={() => handleClick("Switch")}>
             Switch
           </button>
-          {importMessage && (
-            <div style={{ marginTop: "1rem", color: "#00c776" }}>{importMessage}</div>
-          )}
+          {importMessage && <div className="import-message">{importMessage}</div>}
         </div>
       </form>
 
       <h3>Active Mocks</h3>
       {mocks.length > 0 && (
-        <button
-          type="button"
-          className="delete-all-button"
-          style={{ marginBottom: "1rem", background: "#ff5555", color: "#fff" }}
-          onClick={deleteAllMocks}
-        >
+        <button type="button" className="delete-all-button" onClick={deleteAllMocks}>
           Delete All Mocks
         </button>
       )}
-      {mocks.length === 0 && <p>No mocks defined yet</p>}
+      {mocks.length === 0 && <p className="no-mocks">No mocks defined yet</p>}
       <ul className="mock-list">
         {mocks.map((mock) => (
           <li key={mock.id} className="mock-item">
@@ -474,14 +447,12 @@ const MockManager = () => {
               <span className={`status-code status-${Math.floor(mock.status / 100)}xx`}>
                 {mock.status}
               </span>
-
               <button
                 className="toggle-details-button"
                 onClick={() => setExpandedId(expandedId === mock.id ? null : mock.id)}
               >
                 {expandedId === mock.id ? "Hide Details" : "Show Details"}
               </button>
-
               <button
                 className="edit-button"
                 onClick={() => {
@@ -502,12 +473,10 @@ const MockManager = () => {
               >
                 Edit
               </button>
-
               <button className="delete-button" onClick={() => deleteMock(mock.id)}>
                 Delete
               </button>
             </div>
-
             {expandedId === mock.id && (
               <>
                 {mock.headers && (
