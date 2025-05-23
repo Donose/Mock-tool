@@ -12,6 +12,9 @@ const MOCK_FILE = path.join(__dirname, "__mocks.json");
 const REAL_API_URL = "https://uat-public-ubiservices.ubi.com";
 const TEMPLATES_DIR = path.join(__dirname, "templates");
 if (!fs.existsSync(TEMPLATES_DIR)) fs.mkdirSync(TEMPLATES_DIR);
+const sanitizeName = (name: string) =>
+name.replace(/[\\/:"*?<>|]+/g, "_").replace(/\s+/g, "_");
+
 
 type MockRule = {
   id: string;
@@ -94,24 +97,15 @@ app.get("/__templates", (req, res) => {
   const files = fs.readdirSync(TEMPLATES_DIR).filter(f => f.endsWith(".json"));
   res.json(files.map(f => f.replace(".json", "")));
 });
-app.delete("/__templates/:name", (req, res) => {
-  const filePath = path.join(TEMPLATES_DIR, `${req.params.name}.json`);
-  if (fs.existsSync(filePath)) {
-    fs.unlinkSync(filePath);
-    res.json({ success: true });
-  } else {
-    res.status(404).json({ error: "Template not found" });
-  }
-});
 app.post("/__templates/save/:name", async (req, res) => {
-  const name = req.params.name;
+  const name = sanitizeName(req.params.name);
   const filePath = path.join(TEMPLATES_DIR, `${name}.json`);
   await writeFile(filePath, JSON.stringify(req.body, null, 2), "utf-8");
   res.json({ success: true });
 });
 
 app.post("/__templates/apply/:name", async (req, res) => {
-  const name = req.params.name;
+  const name = sanitizeName(req.params.name);
   const filePath = path.join(TEMPLATES_DIR, `${name}.json`);
   if (!fs.existsSync(filePath)) return res.status(404).json({ error: "Template not found" });
   const data = await readFile(filePath, "utf-8");
@@ -119,6 +113,18 @@ app.post("/__templates/apply/:name", async (req, res) => {
   mockRules = JSON.parse(data);
   res.json({ success: true });
 });
+
+app.delete("/__templates/:name", (req, res) => {
+  const name = sanitizeName(req.params.name);
+  const filePath = path.join(TEMPLATES_DIR, `${name}.json`);
+  if (fs.existsSync(filePath)) {
+    fs.unlinkSync(filePath);
+    res.json({ success: true });
+  } else {
+    res.status(404).json({ error: "Template not found" });
+  }
+});
+
 
 app.get("/__mocks", (req: Request, res: Response) => {
   res.json(mockRules);
