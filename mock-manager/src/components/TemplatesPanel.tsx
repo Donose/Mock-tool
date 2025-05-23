@@ -24,9 +24,11 @@ const TemplatesPanel: React.FC<Props> = ({
         style={{ display: "flex", alignItems: "center", gap: "1rem" }}
       >
         <h3 style={{ margin: 0 }}>Templates</h3>
-        <button type="button" className="toggle-button" onClick={toggleShowTemplates}>
-          {showTemplates ? "Collapse All" : "Show All"}
-        </button>
+        {templates.length > 0 && (
+          <button type="button" className="toggle-button" onClick={toggleShowTemplates}>
+            {showTemplates ? "Collapse All" : "Show All"}
+          </button>
+        )}
       </div>
       {message && <div className="import-message">{message}</div>}
       {showTemplates && (
