@@ -158,8 +158,8 @@ const MockManager = () => {
         setMocks(mocks.map((m) => (m.id === editingId ? updatedMock : m)));
         setEditingId(null);
         setFormData(initialFormData);
-      } catch (e) {
-        console.error("Error updating mock:", e);
+      } catch (err) {
+        console.error("Error updating mock:", err);
         alert("Could not update mock—make sure the server is running");
       }
       return;
@@ -197,8 +197,8 @@ const MockManager = () => {
       });
       if (!res.ok) throw new Error("Delete failed");
       setMocks(mocks.filter((m) => m.id !== id));
-    } catch (e) {
-      console.error("Error deleting mock:", e);
+    } catch (err) {
+      console.error("Error deleting mock:", err);
       alert("Could not delete mock—make sure the server is running");
     }
   };
@@ -207,8 +207,8 @@ const MockManager = () => {
     for (const mock of mocks) {
       try {
         await fetch(`http://localhost:4000/__mocks/${mock.id}`, { method: "DELETE" });
-      } catch (e) {
-        console.error("Error deleting mock:", e);
+      } catch (err) {
+        console.error("Error deleting mock:", err);
       }
     }
     setMocks([]);
