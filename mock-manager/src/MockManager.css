@@ -360,6 +360,182 @@ button[type="submit"] {
   font-weight: 600;
   transition: background-color 0.2s ease;
 }
+.template-list {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: #23233a;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+}
+
+.template-list h3 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.2rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  background: rgba(30, 30, 46, 0.7);
+  transition: background 0.2s;
+}
+
+.template-item:hover {
+  background: rgba(40, 40, 60, 0.95);
+}
+
+.template-item span {
+  color: #fff;
+  font-size: 1.05rem;
+  font-family: "Segoe UI", sans-serif;
+  min-width: 90px;
+  word-break: break-all;
+}
+
+.template-item button {
+  background: #181828;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 0;
+}
+
+.template-item button:hover {
+  background: #0070f3;
+  color: #fff;
+}
+.export-button {
+  background: #0070f3;
+  color: #fff;
+  border-radius: 32px;
+  margin-left: 1rem;
+}
+.template-preview {
+  background: #181828;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.7rem;
+  margin-top: 0.5rem;
+  max-width: 600px;
+  overflow-x: auto;
+  font-size: 0.95rem;
+}
+.template-name {
+  cursor: pointer;
+  user-select: none;
+}
+.template-list-header {
+  user-select: none;
+  margin-bottom: 1rem;
+}
+.template-list {
+  margin: 2rem 0;
+  padding: 0;
+  background: #23233a;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.template-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem;
+  background: #1a1a2f;
+  border-bottom: 1px solid #29294a;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.template-list-header span {
+  font-size: 1.3rem;
+  margin-left: 0.5rem;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #29294a;
+  background: transparent;
+  transition: background 0.18s;
+}
+
+.template-item:last-child {
+  border-bottom: none;
+}
+
+.template-item:hover {
+  background: #29294a;
+}
+
+.template-name {
+  color: #fff;
+  font-size: 1.08rem;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.18s;
+  flex: 1;
+  user-select: none;
+}
+
+.template-name:hover {
+  color: #00bfff;
+}
+
+.template-item button {
+  background: #0070f3;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.template-item button:hover,
+.template-item button:focus {
+  background: #0059c1;
+  color: #fff;
+}
+
+.template-preview {
+  background: #181828;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  margin: 0.7rem 2rem 0.7rem 2rem;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.97rem;
+  border: 1px solid #29294a;
+}
 /* Platform-specific styles */
 .button-ps4 {
   background-color: #003087; /* PS4 blue */

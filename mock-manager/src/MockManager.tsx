@@ -12,6 +12,17 @@ const MockManager = () => {
   const [serverStatus, setServerStatus] = useState<"online" | "offline" | "checking">("checking");
   const [includeTimestamp, setIncludeTimestamp] = useState(false);
   const [importMessage, setImportantMessage] = useState<string | null>(null);
+  const [templates, setTemplates] = useState<string[]>([]);
+  const [showTemplates, setShowTemplates] = useState(true);
+
+  const fetchTemplates = async () => {
+    const res = await fetch("http://localhost:4000/__templates");
+    setTemplates(await res.json());
+  };
+
+  useEffect(() => {
+    fetchTemplates();
+  }, []);
 
   const initialFormData = {
     method: "GET",
@@ -272,6 +283,79 @@ const MockManager = () => {
       </div>
 
       <h1>Mock API Manager</h1>
+      <div className="template-list">
+        <div
+          className="template-list-header"
+          style={{ display: "flex", alignItems: "center", gap: "1rem" }}
+        >
+          <h3 style={{ margin: 0 }}>Templates</h3>
+          <button
+            type="button"
+            style={{
+              marginLeft: "auto",
+              background: "#0070f3",
+              color: "#fff",
+              borderRadius: "16px",
+              border: "none",
+              padding: "0.3rem 1rem",
+              cursor: "pointer",
+              fontWeight: 600,
+            }}
+            onClick={() => {
+              setShowTemplates((prev) => !prev);
+            }}
+          >
+            {showTemplates ? "Collapse All" : "Show All"}
+          </button>
+        </div>
+        {showTemplates && (
+          <>
+            {templates.map((tpl) => (
+              <div key={tpl} className="template-item">
+                <span
+                  className="template-name"
+                  style={{
+                    fontWeight: "normal",
+                    textDecoration: "none",
+                    cursor: "default",
+                  }}
+                >
+                  {tpl}
+                </span>
+                <button
+                  type="button"
+                  onClick={async () => {
+                    await fetch(
+                      `http://localhost:4000/__templates/apply/${encodeURIComponent(tpl)}`,
+                      { method: "POST" }
+                    );
+                    setImportantMessage(`Template "${tpl}" applied!`);
+                    const res = await fetch("http://localhost:4000/__mocks");
+                    setMocks(await res.json());
+                  }}
+                >
+                  Apply Template
+                </button>
+                <button
+                  type="button"
+                  className="delete-button"
+                  style={{ marginLeft: "0.5rem", background: "#c00" }}
+                  onClick={async () => {
+                    if (!window.confirm(`Delete template "${tpl}"?`)) return;
+                    await fetch(`http://localhost:4000/__templates/${encodeURIComponent(tpl)}`, {
+                      method: "DELETE",
+                    });
+                    setTemplates(templates.filter((t) => t !== tpl));
+                    setImportantMessage(`Template "${tpl}" deleted!`);
+                  }}
+                >
+                  Delete
+                </button>
+              </div>
+            ))}
+          </>
+        )}
+      </div>
       <form className="mock-form" onSubmit={handleSubmit}>
         <h3>Add new Mock</h3>
         <div className="form-group-pair">
@@ -423,9 +507,28 @@ const MockManager = () => {
 
       <h3>Active Mocks</h3>
       {mocks.length > 0 && (
-        <button type="button" className="delete-all-button" onClick={deleteAllMocks}>
-          Delete All Mocks
-        </button>
+        <div>
+          <button type="button" className="delete-all-button" onClick={deleteAllMocks}>
+            Delete All Mocks
+          </button>
+          <button
+            type="button"
+            className="export-button"
+            onClick={async () => {
+              const name = prompt("Template name?");
+              if (!name) return;
+              await fetch(`http://localhost:4000/__templates/save/${encodeURIComponent(name)}`, {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify(mocks),
+              });
+              setImportantMessage(`Template "${name}" saved!`);
+              fetchTemplates();
+            }}
+          >
+            Save as Template
+          </button>
+        </div>
       )}
       {mocks.length === 0 && <p className="no-mocks">No mocks defined yet</p>}
       <ul className="mock-list">
