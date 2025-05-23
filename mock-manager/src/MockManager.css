@@ -1,0 +1,619 @@
+/* === Global Layout === */
+.mock-manager {
+  max-width: 900px;
+  margin: 2rem auto;
+  padding: 2rem;
+  border-radius: 12px;
+  background: linear-gradient(to bottom right, #150024, #0a0014);
+  font-family: "Segoe UI", sans-serif;
+  color: #ffffff;
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+}
+
+/* === Headings === */
+h1,
+h3 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #ffffff;
+}
+.export-button {
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 32px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+.toggle-button {
+  margin-left: auto;
+  background: #0070f3;
+  color: #fff;
+  border-radius: 16px;
+  border: none;
+  padding: 0.3rem 1rem;
+  cursor: pointer;
+  font-weight: 600;
+}
+.api-docs-link a {
+  color: #0070f3;
+  font-size: 0.9rem;
+  text-decoration: none;
+}
+.api-docs-link a:hover {
+  text-decoration: underline;
+}
+
+/* === Form Layout === */
+.mock-form {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  background-color: #0f0f0f;
+  padding: 2rem;
+  border-radius: 12px;
+  margin-bottom: 2rem;
+  justify-content: space-between;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+.mock-form h3 {
+  flex: 1 1 100%;
+  margin-bottom: 1rem;
+  font-size: 1.2rem;
+}
+
+/* === Label & Input Rows === */
+.form-group-pair {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  width: 100%;
+  align-items: flex-start;
+  gap: 1rem;
+}
+
+.form-label-column {
+  flex: 1;
+  min-width: 140px;
+  max-width: 180px;
+  font-weight: bold;
+  padding-top: 0.5rem;
+  word-break: break-word;
+}
+
+.form-input-column {
+  flex: 2;
+  min-width: 250px;
+  max-width: 100%;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(to bottom right, #0b0018, #1c0d2a);
+  font-family: "Segoe UI", sans-serif;
+  color: #fff;
+}
+
+/* === Textarea Special Styles === */
+.form-input-column textarea {
+  width: 100%;
+  font-family: monospace;
+  resize: vertical;
+  min-height: 100px;
+  padding: 0.6rem;
+  border-radius: 6px;
+  background-color: #1e1e1e;
+  color: #f0f0f0;
+  border: 1px solid #333;
+  max-width: 100%;
+  box-sizing: border-box;
+}
+
+/* === Inputs and Selects === */
+input,
+select,
+textarea {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  padding: 0.6rem;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  border: 1px solid #333;
+  transition: border-color 0.2s ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: #0070f3;
+  outline: none;
+}
+
+textarea {
+  resize: vertical;
+}
+
+/* === Action Buttons === */
+.form-actions {
+  flex-basis: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 1rem;
+  margin-top: 1rem;
+}
+
+button {
+  padding: 0.6rem 1.4rem;
+  border: none;
+  border-radius: 32px;
+  font-weight: 600;
+  font-size: 0.95rem;
+  cursor: pointer;
+  transition: background 0.2s ease, transform 0.1s ease;
+}
+
+button:hover {
+  transform: translateY(-1px);
+}
+
+button[type="submit"] {
+  background-color: #0070f3;
+  color: white;
+}
+
+.cancel-button {
+  background-color: #333;
+  color: #fff;
+}
+
+/* === Mock List === */
+.mock-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 2rem;
+}
+
+.mock-item {
+  background-color: #0f0f0f;
+  border: 1px solid #222;
+  padding: 1rem;
+  border-radius: 10px;
+  margin-bottom: 1rem;
+  box-shadow: 0 0 5px rgba(0, 0, 0, 0.3);
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+/* === Inside Each Mock === */
+.mock-details {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  align-items: center;
+}
+
+.method-badge {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: bold;
+  text-transform: uppercase;
+}
+
+.status-code {
+  color: #00ff99;
+}
+
+.mock-headers,
+.mock-body {
+  background-color: #1e1e2e;
+  padding: 0.6rem;
+  border-radius: 6px;
+  font-family: monospace;
+  white-space: pre-wrap;
+  color: #d0d0d0;
+}
+
+/* === Buttons inside Mocks === */
+.edit-button,
+.delete-button,
+.toggle-details-button {
+  padding: 0.4rem 0.9rem;
+  border-radius: 20px;
+  font-size: 0.85rem;
+  font-weight: bold;
+}
+.delete-all-button {
+  background: #ff5555;
+  color: #fff;
+  border: none;
+  padding: 0.5rem 1.5rem;
+  font-weight: bold;
+  margin-bottom: 1rem;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.delete-all-button:hover {
+  background: #d32f2f;
+}
+.edit-button {
+  background-color: #3498db;
+  color: white;
+}
+
+.delete-button {
+  background-color: #e74c3c;
+  color: white;
+}
+.status-code {
+  font-weight: bold;
+  padding: 0.2rem 0.6rem;
+  border-radius: 6px;
+  font-size: 0.85rem;
+}
+
+.status-2xx {
+  color: #00ff99;
+}
+
+.status-3xx {
+  color: #ffaa00;
+}
+
+.status-4xx {
+  color: #ff6b6b;
+}
+
+.status-5xx {
+  color: #ff2e2e;
+}
+
+.toggle-details-button {
+  background-color: #6c63ff;
+  color: white;
+}
+
+/* ── switch container ─────────────────────────────── */
+.switch {
+  position: relative;
+  display: inline-block;
+  width: 55px;
+  height: 24px; /* slightly taller so text is centred */
+}
+
+/* hide the checkbox */
+.switch input {
+  position: absolute;
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+/* ── track ────────────────────────────────────────── */
+.slider {
+  position: absolute;
+  inset: 0;
+  background: #ccc;
+  border-radius: 24px;
+  transition: background 0.2s;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end; /* text on the right by default */
+  padding: 0 8px; /* room for text */
+  font: 700 12px/1 "Segoe UI", sans-serif;
+  color: #fff;
+  box-sizing: border-box;
+}
+
+/* ── text inside the track ────────────────────────── */
+.slider-text {
+  pointer-events: none; /* clicks still reach the input */
+}
+
+/* ── knob ─────────────────────────────────────────── */
+.slider::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 2px; /* starting position (OFF)      */
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  z-index: 1; /* knob above track, below text */
+}
+
+/* ── checked state ───────────────────────────────── */
+.switch input:checked + .slider {
+  background: #4caf50;
+  justify-content: flex-start; /* text moves to the left */
+}
+
+.switch input:checked + .slider::before {
+  transform: translateX(33px); /* knob slides to the right */
+}
+
+.form-actions {
+  display: flex;
+  gap: 20px;
+  margin-top: 16px;
+}
+.checkbox {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.checkbox input[type="checkbox"] {
+  width: 24px;
+  height: 24px;
+  accent-color: #0070f3;
+}
+.form-actions button {
+  padding: 10px 20px;
+  font-size: 14px;
+  border: none;
+  cursor: pointer;
+  color: #fff;
+  font-weight: 600;
+  transition: background-color 0.2s ease;
+}
+.template-list {
+  margin: 2rem 0;
+  padding: 1.5rem 2rem;
+  background: #23233a;
+  border-radius: 16px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+}
+
+.template-list h3 {
+  text-align: center;
+  color: #fff;
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  font-weight: 700;
+  letter-spacing: 1px;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  gap: 2rem;
+  margin-bottom: 1.2rem;
+  padding: 0.7rem 1rem;
+  border-radius: 10px;
+  background: rgba(30, 30, 46, 0.7);
+  transition: background 0.2s;
+}
+
+.template-item:hover {
+  background: rgba(40, 40, 60, 0.95);
+}
+
+.template-item span {
+  color: #fff;
+  font-size: 1.05rem;
+  font-family: "Segoe UI", sans-serif;
+  min-width: 90px;
+  word-break: break-all;
+}
+
+.template-item button {
+  background: #181828;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 0;
+}
+
+.template-item button:hover {
+  background: #0070f3;
+  color: #fff;
+}
+.export-button {
+  background: #0070f3;
+  color: #fff;
+  border-radius: 32px;
+  margin-left: 1rem;
+}
+.template-preview {
+  background: #181828;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.7rem;
+  margin-top: 0.5rem;
+  max-width: 600px;
+  overflow-x: auto;
+  font-size: 0.95rem;
+}
+.template-name {
+  cursor: pointer;
+  user-select: none;
+  font-weight: normal;
+  text-decoration: none;
+}
+.template-list-header {
+  user-select: none;
+  margin-bottom: 1rem;
+}
+.template-list {
+  margin: 2rem 0;
+  padding: 0;
+  background: #23233a;
+  border-radius: 18px;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.18);
+  max-width: 100%;
+  overflow: hidden;
+}
+
+.template-list-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.2rem 2rem;
+  background: #1a1a2f;
+  border-bottom: 1px solid #29294a;
+  cursor: pointer;
+  user-select: none;
+  font-size: 1.2rem;
+  font-weight: 700;
+  color: #fff;
+  letter-spacing: 1px;
+}
+
+.template-list-header span {
+  font-size: 1.3rem;
+  margin-left: 0.5rem;
+}
+
+.template-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1.5rem;
+  padding: 1rem 2rem;
+  border-bottom: 1px solid #29294a;
+  background: transparent;
+  transition: background 0.18s;
+}
+
+.template-item:last-child {
+  border-bottom: none;
+}
+
+.template-item:hover {
+  background: #29294a;
+}
+
+.template-name {
+  color: #fff;
+  font-size: 1.08rem;
+  font-family: "Segoe UI", sans-serif;
+  font-weight: 600;
+  cursor: pointer;
+  text-decoration: underline;
+  transition: color 0.18s;
+  flex: 1;
+  user-select: none;
+}
+
+.template-name:hover {
+  color: #00bfff;
+}
+
+.template-item button {
+  background: #0070f3;
+  color: #fff;
+  border-radius: 20px;
+  padding: 0.4rem 1.2rem;
+  font-size: 1rem;
+  font-weight: 600;
+  border: none;
+  transition: background 0.2s, color 0.2s;
+  margin-left: 1rem;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.template-item button:hover,
+.template-item button:focus {
+  background: #0059c1;
+  color: #fff;
+}
+
+.template-preview {
+  background: #181828;
+  color: #fff;
+  border-radius: 8px;
+  padding: 0.7rem 1.5rem;
+  margin: 0.7rem 2rem 0.7rem 2rem;
+  max-width: 100%;
+  overflow-x: auto;
+  font-size: 0.97rem;
+  border: 1px solid #29294a;
+}
+/* Platform-specific styles */
+.button-ps4 {
+  background-color: #003087; /* PS4 blue */
+}
+.button-switch {
+  background-color: #e60012; /* Nintendo Switch red */
+}
+.button-ps5 {
+  background-color: #0050d8; /* PS5 blue (lighter) */
+}
+
+.button-xbox {
+  background-color: #107c10; /* Xbox green */
+}
+.api-doc-link {
+  text-align: right;
+  margin-bottom: 1rem;
+}
+.server-status-container {
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.toggle-details-button.online {
+  background-color: #00c776;
+}
+.toggle-details-button.offline {
+  background-color: #555;
+}
+.server-offline-message {
+  margin-top: 0.5rem;
+  font-size: 0.9rem;
+  color: #ff8080;
+}
+.server-offline-pre {
+  background-color: #1e1e1e;
+  padding: 0.5rem 1rem;
+  border-radius: 6px;
+  display: inline-block;
+}
+.import-message {
+  margin-top: 1rem;
+  color: #00c776;
+}
+.no-mocks {
+  color: #ccc;
+  text-align: center;
+  margin-top: 1rem;
+}
+.button-xbox:hover,
+.button-ps4:hover,
+.button-ps5:hover {
+  filter: brightness(1.1);
+}
+
+@media (max-width: 768px) {
+  .form-group-pair {
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .form-label-column {
+    min-width: unset;
+    width: 100%;
+  }
+
+  .form-input-column {
+    width: 100%;
+  }
+}

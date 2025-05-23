@@ -1,0 +1,13 @@
+
+**/node_modules/
+
+
+**/npm-lock.yaml
+
+
+*.log
+
+
+.DS_Store
+Thumbs.db
+mock-api-server/src/__mocks.json
