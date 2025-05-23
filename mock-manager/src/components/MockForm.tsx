@@ -1,5 +1,4 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-// components/MockForm.tsx
 import React from "react";
 import "../MockManager.css";
 
