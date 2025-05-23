@@ -129,6 +129,7 @@ const MockManager = () => {
             body: parseBody,
           }),
         });
+        setIncludeTimestamp(false);
         if (!res.ok) throw new Error("Failed to update mock");
         const updatedMock: Mock = await res.json();
         setMocks(mocks.map((m) => (m.id === editingId ? updatedMock : m)));
@@ -140,6 +141,7 @@ const MockManager = () => {
           headers: '{ "Content-Type": "application/json" }',
           body: "{}",
         });
+        setIncludeTimestamp(false);
       } catch (err) {
         console.error("Error updating mock:", err);
         alert("Could not update mock");
@@ -173,6 +175,7 @@ const MockManager = () => {
         headers: '{ "Content-Type": "application/json" }',
         body: "{}",
       });
+      setIncludeTimestamp(false);
     } catch (err) {
       console.error("Error adding mock:", err);
       alert("Failed to add mock");
@@ -281,6 +284,7 @@ const MockManager = () => {
             headers: '{ "Content-Type": "application/json" }',
             body: "{}",
           });
+          setIncludeTimestamp(false);
         }}
         formatJsonField={formatJsonField}
       />
