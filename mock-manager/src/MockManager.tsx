@@ -24,6 +24,7 @@ const MockManager = () => {
     status: 200,
     headers: '{ "Content-Type": "application/json" }',
     body: "{}",
+    delay: 0,
   });
   const [mocks, setMocks] = useState<Mock[]>([]);
 
@@ -127,6 +128,7 @@ const MockManager = () => {
             status: formData.status,
             headers: parseHeaders,
             body: parseBody,
+            delay: formData.delay || 0,
           }),
         });
         setIncludeTimestamp(false);
@@ -140,6 +142,7 @@ const MockManager = () => {
           status: 200,
           headers: '{ "Content-Type": "application/json" }',
           body: "{}",
+          delay: 0,
         });
         setIncludeTimestamp(false);
       } catch (err) {
@@ -174,6 +177,7 @@ const MockManager = () => {
         status: 200,
         headers: '{ "Content-Type": "application/json" }',
         body: "{}",
+        delay: 0,
       });
       setIncludeTimestamp(false);
     } catch (err) {
@@ -283,6 +287,7 @@ const MockManager = () => {
             status: 200,
             headers: '{ "Content-Type": "application/json" }',
             body: "{}",
+            delay: 0,
           });
           setIncludeTimestamp(false);
         }}
@@ -335,10 +340,25 @@ const MockManager = () => {
                 : mock.body
                 ? JSON.stringify(mock.body, null, 2)
                 : "",
+            delay: mock.delay ?? 0,
           });
           setEditingId(mock.id);
         }}
         onDelete={deleteMock}
+        onDelayChange={async (id: string, delay: number) => {
+          try {
+            const res = await fetch(`http://localhost:4000/__mocks/${id}`, {
+              method: "PATCH",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({ delay }),
+            });
+            if (!res.ok) throw new Error("Failed to update delay");
+            setMocks((prev) => prev.map((m) => (m.id === id ? { ...m, delay } : m)));
+          } catch (err) {
+            console.error("Error updating delay:", err);
+            alert("Could not update delay");
+          }
+        }}
       />
     </div>
   );

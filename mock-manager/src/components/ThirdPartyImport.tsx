@@ -25,6 +25,9 @@ const ThirdPartyImport: React.FC<Props> = ({ onImport, importMessage }) => {
         <button type="button" className="button-switch" onClick={() => onImport("Switch")}>
           Switch
         </button>
+        <button type="button" className="button-PC" onClick={() => onImport("PC")}>
+          PC Xbox Link
+        </button>
         {importMessage && <div className="import-message">{importMessage}</div>}
       </div>
     </form>

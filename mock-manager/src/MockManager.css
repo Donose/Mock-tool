@@ -562,6 +562,10 @@ button[type="submit"] {
 .button-xbox {
   background-color: #107c10; /* Xbox green */
 }
+.button-PC {
+  background: linear-gradient(90deg, #0070f3 15%, #00c776 100%);
+  color: #fff;
+}
 .api-doc-link {
   text-align: right;
   margin-bottom: 1rem;
@@ -590,6 +594,7 @@ button[type="submit"] {
 .import-message {
   margin-top: 1rem;
   color: #00c776;
+  margin-bottom: 1rem;
 }
 .no-mocks {
   color: #ccc;
@@ -600,6 +605,37 @@ button[type="submit"] {
 .button-ps4:hover,
 .button-ps5:hover {
   filter: brightness(1.1);
+}
+
+.delay-badge {
+  margin-left: 8px;
+  padding: 2px 6px;
+  background-color: #ffe58f;
+  color: #ad6800;
+  border-radius: 4px;
+  font-size: 12px;
+  display: inline-block;
+}
+.delay-dropdown {
+  background-color: #1e1e1e;
+  color: #ffffff;
+  border: 1px solid #555;
+  border-radius: 4px;
+  font-size: 12px;
+  padding: 2px 6px;
+  height: 28px;
+  appearance: none; /* Remove default arrow (for full control) */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+}
+
+/* Optional: Custom arrow using background image */
+.delay-dropdown {
+  background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg fill='white' height='10' viewBox='0 0 24 24' width='10' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 6px center;
+  background-size: 10px;
+  padding-right: 20px;
 }
 
 @media (max-width: 768px) {

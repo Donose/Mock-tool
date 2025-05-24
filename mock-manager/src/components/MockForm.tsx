@@ -4,6 +4,7 @@ import "../MockManager.css";
 
 type Props = {
   formData: {
+    delay: string | number | readonly string[] | undefined;
     method: string;
     endpoint: string;
     status: number;

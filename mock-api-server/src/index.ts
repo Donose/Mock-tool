@@ -25,7 +25,8 @@ type MockRule = {
   body?: any;
   transactionId?: string
   transactionTime?:string
-  active:boolean
+  active:boolean;
+  delay?:number;
 };
 
 let mockRules: MockRule[] = [];
@@ -138,15 +139,23 @@ app.post("/__mocks", async (req: Request, res: Response) => {
 });
 
 app.patch("/__mocks/:id", async (req: Request, res: Response) => {
-  const rule = mockRules.find(r=> r.id === req.params.id);
-  if (typeof req.body.active !== "boolean") {
-    return res.status(400).send({ error: "active flag missing or invalid" });
+  const rule = mockRules.find(r => r.id === req.params.id);
+  if (!rule) {
+    return res.status(404).send({ error: "Mock not found" });
   }
 
-  rule.active = req.body.active;
+  if (typeof req.body.active === "boolean") {
+    rule.active = req.body.active;
+  }
+
+  if (typeof req.body.delay === "number") {
+    rule.delay = req.body.delay;
+  }
+
   await saveMocks();
   res.json(rule);
-})
+});
+
 
 app.delete("/__mocks/:id", async (req: Request, res: Response) => {
   const { id } = req.params;
@@ -172,34 +181,40 @@ app.get("/__health", (req, res) => {
   res.send({ status: "ok", timestamp: new Date().toISOString() });
 });
 
-const handleMockRequest: RequestHandler = (req, res, next) => {
-
+const handleMockRequest: RequestHandler = async (req, res, next) => {
   const anyMock = mockRules.find(r =>
     matchRule(r, req.path, req.method, req.query)
   );
   const matched = anyMock && anyMock.active ? anyMock : undefined;
 
   if (matched) {
+    if (matched.delay && typeof matched.delay === "number") {
+      console.log(`Delaying response for ${matched.delay}ms`);
+      await new Promise(resolve => setTimeout(resolve, matched.delay));
+    }
+
     res.status(matched.status);
     if (matched.headers) {
-      for (const [k, v] of Object.entries(matched.headers)) res.setHeader(k, v);
+      for (const [k, v] of Object.entries(matched.headers)) {
+        res.setHeader(k, v);
+      }
     }
+
     res.send(matched.body);
     console.log(`Mocked ${req.method} ${req.path} with status ${matched.status}`);
     return;
   }
 
   if (anyMock && !anyMock.active) {
-
     console.log(`Mock for ${req.method} ${req.path} is inactive, proxying to real API`);
     res.status(401).send({ error: "Mock is inactive" });
     return next();
   }
 
-
-  res.status(404).send({ error: "No mock matched" });
   console.log(`No mock matched for ${req.method} ${req.path}`);
+  res.status(404).send({ error: "No mock matched" });
 };
+
 
 app.all("*", handleMockRequest, proxy);
 
