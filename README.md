@@ -15,6 +15,8 @@ It includes:
 
 ### 🧩 Mock Server (`mock-server-api`)
 - Configure mock rules: method, path, status, headers, body
+- Save templates
+- Support for third party token mock
 - Supports **per-mock delay** in milliseconds
 - Match by method + path (with optional query parameters)
 - Toggle mocks on/off from UI
@@ -35,6 +37,11 @@ It includes:
 ---
 
 ## ⚙️ How to Run
+### 1. Start the UI
+```bash
+cd mock-manager
+npm install
+npm run dev
 
 ### 1. Start the Mock Server
 ```bash
