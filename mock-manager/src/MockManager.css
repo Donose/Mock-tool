@@ -609,12 +609,13 @@ button[type="submit"] {
 
 .delay-badge {
   margin-left: 8px;
-  padding: 2px 6px;
+  padding: 0.2rem 0.5rem;
   background-color: #ffe58f;
   color: #ad6800;
-  border-radius: 4px;
-  font-size: 12px;
+  border-radius: 16px;
+  font-size: 0.95rem;
   display: inline-block;
+  font-weight: 600;
 }
 .delay-dropdown {
   background-color: #1e1e1e;

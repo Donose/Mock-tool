@@ -1,54 +1,116 @@
-# React + TypeScript + Vite
+React + TypeScript + Vite – Mock Manager & Server Toolkit
+This project provides a local mocking system for frontend and QA workflows.
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+It includes:
 
-Currently, two official plugins are available:
+A React + Vite + TypeScript UI for creating and managing mocks (mock-manager)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+An Express-based mock API server (mock-server-api) that serves mock responses and templates
 
-## Expanding the ESLint configuration
+A Chrome extension for automatic request redirection using declarativeNetRequest
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Features like per-mock delays, active mock syncing, and connection status display
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+🔧 Features
+🧩 Mock Server (mock-server-api)
+Configurable mock rules: method, path, status, headers, body
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+Match by method + path (with optional query param filtering)
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Supports per-mock delay (in milliseconds)
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
-```
+Mock toggling (on/off)
+
+Template management (save, apply, delete)
+
+Auto-persistence to \_\_mocks.json
+
+Healthcheck at /\_\_health
+
+Exposes /\_\_active_mocks for Chrome extension sync
+
+🧪 Chrome Extension (MV3)
+Redirects live requests based on active mocks
+
+Polls http://localhost:4000/\_\_active_mocks every second
+
+Auto-syncs redirect rules via declarativeNetRequest
+
+Displays:
+
+✅ Connection status to the mock server
+
+🔢 Active mock count
+
+No extension ID config required
+
+⚙️ How to Run
+Step 1 – Start the Mock Server
+bash
+Copy
+Edit
+cd mock-server-api
+npm install
+npm run dev
+Server runs on http://localhost:4000
+
+Step 2 – Start the React UI
+bash
+Copy
+Edit
+cd mock-manager
+npm install
+npm run dev
+UI runs on http://localhost:5173 (default Vite port)
+
+Step 3 – Load the Chrome Extension
+Open chrome://extensions
+
+Enable Developer mode
+
+Click "Load unpacked"
+
+Select the extension folder containing:
+
+manifest.json
+
+background.js
+
+popup.html
+
+popup.js
+
+🛠 Capabilities
+Real-time mock editing and rule updates
+
+Per-mock delay support
+
+Chrome extension with polling + rule sync
+
+Templates for reusing and sharing mock sets
+
+Auto-removal of redirect rules when mocks are disabled
+
+🧱 Stack
+React + Vite (UI)
+
+TypeScript
+
+Express (mock server)
+
+Chrome Extension (Manifest V3 + background worker)
+
+📌 Future Improvements
+✅ Hit counter per mock
+
+⏳ Expirable or limited-use mocks
+
+🔄 Templated dynamic responses
+
+📜 Unmatched request logging
+
+📊 Live request inspection
+
+⬆️ Import/export mock sets
+
+🧩 WebSocket / GraphQL support

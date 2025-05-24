@@ -198,7 +198,20 @@ const MockManager = () => {
       alert("Could not delete mock");
     }
   };
-
+  const onDelay = async (id: string, delay: number) => {
+    try {
+      const res = await fetch(`http://localhost:4000/__mocks/${id}`, {
+        method: "PATCH",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ delay }),
+      });
+      if (!res.ok) throw new Error("Failed to update delay");
+      setMocks((prev) => prev.map((m) => (m.id === id ? { ...m, delay } : m)));
+    } catch (err) {
+      console.error("Error updating delay:", err);
+      alert("Could not update delay");
+    }
+  };
   const deleteAllMocks = async () => {
     if (!window.confirm("Are you sure you want to delete all mocks?")) return;
     for (const mock of mocks) {
@@ -345,20 +358,7 @@ const MockManager = () => {
           setEditingId(mock.id);
         }}
         onDelete={deleteMock}
-        onDelayChange={async (id: string, delay: number) => {
-          try {
-            const res = await fetch(`http://localhost:4000/__mocks/${id}`, {
-              method: "PATCH",
-              headers: { "Content-Type": "application/json" },
-              body: JSON.stringify({ delay }),
-            });
-            if (!res.ok) throw new Error("Failed to update delay");
-            setMocks((prev) => prev.map((m) => (m.id === id ? { ...m, delay } : m)));
-          } catch (err) {
-            console.error("Error updating delay:", err);
-            alert("Could not update delay");
-          }
-        }}
+        onDelayChange={onDelay}
       />
     </div>
   );

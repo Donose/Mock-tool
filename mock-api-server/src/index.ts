@@ -177,6 +177,16 @@ app.put("/__mocks/:id", async (req: Request, res: Response) => {
   res.json(updated);
 });
 
+app.get("/__active_mocks", (req: Request, res: Response) => {
+  const activeMocks = mockRules.filter(m => m.active);
+  res.json(
+    activeMocks.map((m, i) => ({
+      url: m.endpoint,
+      method: m.method
+    }))
+  );
+});
+
 app.get("/__health", (req, res) => {
   res.send({ status: "ok", timestamp: new Date().toISOString() });
 });

@@ -43,6 +43,8 @@ const MockList: React.FC<Props> = ({
               <option value={0}>No Delay</option>
               <option value={800}>800ms</option>
               <option value={3000}>3s</option>
+              <option value={6000}>6s</option>
+              <option value={10000}>10s</option>
             </select>
             <span className={`method-badge method-${mock.method}`}>{mock.method}</span>
             <span className="endpoint">{mock.endpoint}</span>
