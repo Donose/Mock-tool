@@ -6,7 +6,7 @@ export const ServerCheck: React.FC = () => {
   const checkServerStatus = async () => {
     setServerStatus("checking");
     try {
-      const res = await fetch("http://localhost:4000/__health");
+      const res = await fetch("https://localhost:4000/__health");
       if (res.ok) {
         setServerStatus("online");
       } else {

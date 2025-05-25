@@ -29,13 +29,13 @@ const MockManager = () => {
   const [mocks, setMocks] = useState<Mock[]>([]);
 
   const fetchTemplates = async () => {
-    const res = await fetch("http://localhost:4000/__templates");
+    const res = await fetch("https://localhost:4000/__templates");
     setTemplates(await res.json());
   };
 
   const loadMocks = async () => {
     try {
-      const res = await fetch("http://localhost:4000/__mocks");
+      const res = await fetch("https://localhost:4000/__mocks");
       if (!res.ok) throw new Error("Failed to load mocks");
       const data: Mock[] = await res.json();
       setMocks(data);
@@ -82,7 +82,7 @@ const MockManager = () => {
   };
 
   const toggleMockActive = async (id: string, currentlyActive: boolean) => {
-    await fetch(`http://localhost:4000/__mocks/${id}`, {
+    await fetch(`https://localhost:4000/__mocks/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ active: !currentlyActive }),
@@ -119,7 +119,7 @@ const MockManager = () => {
 
     if (editingId) {
       try {
-        const res = await fetch(`http://localhost:4000/__mocks/${editingId}`, {
+        const res = await fetch(`https://localhost:4000/__mocks/${editingId}`, {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
@@ -163,7 +163,7 @@ const MockManager = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:4000/__mocks", {
+      const res = await fetch("https://localhost:4000/__mocks", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newMock),
@@ -188,7 +188,7 @@ const MockManager = () => {
 
   const deleteMock = async (id: string) => {
     try {
-      const res = await fetch(`http://localhost:4000/__mocks/${id}`, {
+      const res = await fetch(`https://localhost:4000/__mocks/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Delete failed");
@@ -200,7 +200,7 @@ const MockManager = () => {
   };
   const onDelay = async (id: string, delay: number) => {
     try {
-      const res = await fetch(`http://localhost:4000/__mocks/${id}`, {
+      const res = await fetch(`https://localhost:4000/__mocks/${id}`, {
         method: "PATCH",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ delay }),
@@ -216,7 +216,7 @@ const MockManager = () => {
     if (!window.confirm("Are you sure you want to delete all mocks?")) return;
     for (const mock of mocks) {
       try {
-        await fetch(`http://localhost:4000/__mocks/${mock.id}`, { method: "DELETE" });
+        await fetch(`https://localhost:4000/__mocks/${mock.id}`, { method: "DELETE" });
       } catch (err) {
         console.error("Error deleting mock:", err);
       }
@@ -229,7 +229,7 @@ const MockManager = () => {
     if (!templateMocks) return;
     for (const mock of templateMocks) {
       try {
-        const res = await fetch("http://localhost:4000/__mocks", {
+        const res = await fetch("https://localhost:4000/__mocks", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(mock),
@@ -268,15 +268,15 @@ const MockManager = () => {
         showTemplates={showTemplates}
         toggleShowTemplates={() => setShowTemplates((prev) => !prev)}
         onApply={async (tpl) => {
-          await fetch(`http://localhost:4000/__templates/apply/${encodeURIComponent(tpl)}`, {
+          await fetch(`https://localhost:4000/__templates/apply/${encodeURIComponent(tpl)}`, {
             method: "POST",
           });
           setTemplateMessage(`Template "${tpl}" applied!`);
-          const res = await fetch("http://localhost:4000/__mocks");
+          const res = await fetch("https://localhost:4000/__mocks");
           setMocks(await res.json());
         }}
         onDelete={async (tpl) => {
-          await fetch(`http://localhost:4000/__templates/${encodeURIComponent(tpl)}`, {
+          await fetch(`https://localhost:4000/__templates/${encodeURIComponent(tpl)}`, {
             method: "DELETE",
           });
           setTemplates(templates.filter((t) => t !== tpl));
@@ -321,7 +321,7 @@ const MockManager = () => {
             onClick={async () => {
               const name = prompt("Template name?");
               if (!name) return;
-              await fetch(`http://localhost:4000/__templates/save/${encodeURIComponent(name)}`, {
+              await fetch(`https://localhost:4000/__templates/save/${encodeURIComponent(name)}`, {
                 method: "POST",
                 headers: { "Content-Type": "application/json" },
                 body: JSON.stringify(mocks),

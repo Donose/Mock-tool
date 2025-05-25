@@ -1,80 +1,70 @@
-const MOCK_SERVER_URL = "http://localhost:4000/__active_mocks";
+const MOCK_SERVER_URL = "https://localhost:4000/__active_mocks";
 const ALL_DOMAINS = {
-  uat:  "uat-public-ubiservices.ubi.com",
-  prod: "public-ubiservices.ubi.com"
+  uat: "https://uat-public-ubiservices.ubi.com",
+  prod: "https://public-ubiservices.ubi.com"
 };
 
-let lastHash = null;
-
-chrome.runtime.onInstalled.addListener(() => setInterval(syncRules, 1000));
+let lastRulesHash = null;
 
 async function syncRules() {
+  const { mockingEnabled = true, redirectDomains = ["prod"] } = await chrome.storage.local.get();
+  if (!mockingEnabled) {
+    await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds: Array.from({ length: 100 }, (_, i) => i + 1) });
+    return;
+  }
+
   try {
-    const res = await fetch(MOCK_SERVER_URL);
-    if (!res.ok) throw new Error("mock server " + res.status);
+    const res = await fetch("https://localhost:4000/__active_mocks");
+    if (!res.ok) throw new Error("Server returned " + res.status);
     const mocks = await res.json();
 
-    chrome.storage.local.set({ mockCount: mocks.length });
+    const hosts = redirectDomains.map(d =>
+      d === "uat"
+        ? "uat-public-ubiservices.ubi.com"
+        : "public-ubiservices.ubi.com"
+    );
 
-    const { redirectDomains = ["uat"] } =
-      await chrome.storage.local.get("redirectDomains");
-    const hosts = redirectDomains.map(d => ALL_DOMAINS[d]);
+    const hash = JSON.stringify({ mocks, hosts });
+    if (hash === lastRulesHash) return; // ✅ Do nothing if nothing changed
+    lastRulesHash = hash;
 
-    // ── hash so we only touch DNR when something actually changed
-    const newHash = JSON.stringify({ mocks, hosts });
-    if (newHash === lastHash) {
-      chrome.storage.local.set({ mockConnected: true });
-      return;
-    }
-    lastHash = newHash;
-
-    // ── build rules (skip invalid / inactive)
+    let rules = [];
     let id = 1;
-    const rules = [];
-    for (const m of mocks) {
-      if (!m.url?.startsWith("/") || !m.method) {
-        console.warn("[SKIP] bad mock:", m);
-        continue;
-      }
-      for (const h of hosts) {
+    mocks.forEach(mock => {
+      if (!mock.url || !mock.method) return;
+      hosts.forEach(host => {
         rules.push({
           id: id++,
           priority: 1,
           action: {
             type: "redirect",
-            redirect: { url: `http://localhost:4000${m.url}` }
+            redirect: { url: `https://localhost:4000${mock.url}` }
           },
           condition: {
-            urlFilter: `*://${h}${m.url}*`,          // ← allow anything after path
-            resourceTypes: [
-              "xmlhttprequest",
-              "main_frame",
-              "sub_frame",
-              "other"
-            ]
+            urlFilter: `|https://${host}${mock.url}`, // "|" anchors to start of URL
+            resourceTypes: ["xmlhttprequest"],
+            requestMethods: [mock.method.toLowerCase()]
           }
         });
-      }
-    }
+      });
+    });
 
     await chrome.declarativeNetRequest.updateDynamicRules({
       removeRuleIds: rules.map(r => r.id),
       addRules: rules
     });
 
-    console.log("[MOCK] applied", rules.length, "rules");
-    chrome.storage.local.set({ mockConnected: true });
-
+    console.log("[MOCK] Updated", rules.length, "rules");
   } catch (e) {
-    console.warn("[MOCK] update failed:", e.message);
-    chrome.storage.local.set({ mockConnected: false });
+    console.warn("[MOCK] Sync error:", e.message);
   }
 }
 
-// tiny helper for the hash
-String.prototype.hashCode = function () {
-  let h = 0;
-  for (let i = 0; i < this.length; i++)
-    h = (h << 5) - h + this.charCodeAt(i) | 0;
-  return h;
-};
+
+chrome.runtime.onInstalled.addListener(syncRules);
+chrome.runtime.onStartup.addListener(syncRules);
+
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg.type === "syncNow") syncRules();
+});
+

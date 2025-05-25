@@ -1,25 +1,22 @@
 {
   "manifest_version": 3,
   "name": "Mock Redirect Extension",
-  "version": "1.6",
+  "version": "2.0",
   "permissions": [
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess",
     "storage",
-    "scripting"
+     "declarativeNetRequestFeedback"
   ],
   "host_permissions": [
-    "http://localhost:4000/*",
-    "*://uat-public-ubiservices.ubi.com/*",
-    "*://public-ubiservices.ubi.com/*"
+    "https://localhost:4000/*",
+    "https://uat-public-ubiservices.ubi.com/*",
+    "https://public-ubiservices.ubi.com/*"
   ],
-  "background": { "service_worker": "background.js" },
-  "action":     { "default_popup": "popup.html" },
-  "content_scripts": [
-    {
-      "matches": ["<all_urls>"],
-      "js": ["injector.js"],
-      "run_at": "document_idle"
-    }
-  ]
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
 }
