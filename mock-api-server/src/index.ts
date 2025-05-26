@@ -4,7 +4,7 @@
 // • Looks for trusted mkcert files in ./certs first
 // • Falls back to `devcert` or an in‑memory self‑signed PEM pair
 // • Persists mocks in __mocks.json and lets Chrome‑extension front‑end
-//   read /__active_mocks every second.
+//   read /__active_mocks every 6 seconds.
 // ────────────────────────────────────────────────────────────
 
 import express, { RequestHandler } from "express";
@@ -31,7 +31,9 @@ const CERTS_DIR      = path.join(__dirname, "certs");
 const MKCERT_KEY     = path.join(CERTS_DIR, "localhost-key.pem");
 const MKCERT_CERT    = path.join(CERTS_DIR, "localhost.pem");
 
-if (!fs.existsSync(TEMPLATES_DIR)) fs.mkdirSync(TEMPLATES_DIR, { recursive: true });
+[TEMPLATES_DIR, CERTS_DIR].forEach(dir =>
+  fs.mkdirSync(dir, { recursive: true })
+);
 
 const sanitizeName = (name: string) =>
   name.replace(/[\\/:"*?<>|]+/g, "_").replace(/\s+/g, "_");
@@ -55,7 +57,7 @@ interface MockRule {
 let mockRules: MockRule[] = [];
 
 // ------------------------------------------------------------
-// Proxy to real API (only reached when no mock matches)
+// Proxy to real API (only reached when no mock matches) //should remove|extension rules takes care of it
 // ------------------------------------------------------------
 const proxy = createProxyMiddleware({
   target: REAL_API_URL,
