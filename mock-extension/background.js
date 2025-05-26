@@ -17,7 +17,7 @@ async function syncRules() {
     await chrome.storage.local.set({ mockCount: 0 });
     return;
   }
-
+  const currentEnv = redirectDomains.map(env => env.toUpperCase()).join(", ");
   try {
     const res = await fetch(ACTIVE_MOCKS_URL);
     if (!res.ok) throw new Error(`Status ${res.status}`);
@@ -59,18 +59,19 @@ async function syncRules() {
         try {
           await chrome.scripting.executeScript({
             target: { tabId: tab.id },
-            func: (count) => {
+            func: (count, env) => {
               const toast = document.createElement('div');
+              //maybe extract this
               Object.assign(toast.style, {
                 position: 'fixed', bottom: '16px', right: '16px',
                 padding: '8px 12px', background: '#333', color: '#fff',
-                borderRadius: '4px', zIndex: '2147483647', fontFamily: 'sans-serif'
+                borderRadius: '24px', zIndex: '2147483647', fontFamily: 'sans-serif',
               });
-              toast.textContent = `Active mocks: ${count}`;
+              toast.textContent = `Active mocks: ${count} On Environment: (${env})`;
               document.body.append(toast);
               setTimeout(() => toast.remove(), 3000);
             },
-            args: [mocks.length]
+            args: [mocks.length, currentEnv]
           });
         } catch (err) {
           console.warn('Toast injection failed for tab', tab.id, err);
