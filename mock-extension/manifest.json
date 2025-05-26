@@ -1,0 +1,22 @@
+{
+  "manifest_version": 3,
+  "name": "Mock Redirect Extension",
+  "version": "2.0",
+  "permissions": [
+    "declarativeNetRequest",
+    "declarativeNetRequestWithHostAccess",
+    "storage",
+     "declarativeNetRequestFeedback",
+     "tabs",
+     "alarms"
+  ],
+  "host_permissions": [
+   "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html"
+  }
+}

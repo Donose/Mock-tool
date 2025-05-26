@@ -1,54 +1,47 @@
-# React + TypeScript + Vite
+# React + TypeScript + Vite – Mock Manager & Server Toolkit
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+This project provides a local mocking system for frontend and QA workflows.
 
-Currently, two official plugins are available:
+It includes:
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+- A **React + Vite + TypeScript** UI (`mock-manager`) for creating and managing mocks
+- An **Express-based mock API server** (`mock-server-api`) for serving responses
+- A **Chrome extension** for live request redirection
+- Support for per-mock delays, templates, connection status, and active mock sync
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+## 🔧 Features
 
-```js
-export default tseslint.config({
-  extends: [
-    // Remove ...tseslint.configs.recommended and replace with this
-    ...tseslint.configs.recommendedTypeChecked,
-    // Alternatively, use this for stricter rules
-    ...tseslint.configs.strictTypeChecked,
-    // Optionally, add this for stylistic rules
-    ...tseslint.configs.stylisticTypeChecked,
-  ],
-  languageOptions: {
-    // other options...
-    parserOptions: {
-      project: ['./tsconfig.node.json', './tsconfig.app.json'],
-      tsconfigRootDir: import.meta.dirname,
-    },
-  },
-})
-```
+### 🧩 Mock Server (`mock-server-api`)
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+- Configure mock rules: method, path, status, headers, body
+- Supports **per-mock delay** in milliseconds
+- Match by method + path (with optional query parameters)
+- Toggle mocks on/off from UI
+- Auto-persistence to `__mocks.json`
+- Manage templates (save, apply, delete)
+- Exposes `/__active_mocks` for Chrome extension sync
+- Health check: `GET /__health`
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+### 🧪 Chrome Extension
 
-export default tseslint.config({
-  plugins: {
-    // Add the react-x and react-dom plugins
-    'react-x': reactX,
-    'react-dom': reactDom,
-  },
-  rules: {
-    // other rules...
-    // Enable its recommended typescript rules
-    ...reactX.configs['recommended-typescript'].rules,
-    ...reactDom.configs.recommended.rules,
-  },
-})
+- Polls `http://localhost:4000/__active_mocks` every 1 second
+- Uses `declarativeNetRequest` to update redirect rules
+- Auto-applies changes when mock state updates
+- Popup shows:
+  - ✅ Connection status
+  - 🔢 Active mock count
+- No extension ID needed; no reloads required
+
+---
+
+## ⚙️ How to Run
+
+### 1. Start the Mock Server
+
+```bash
+cd mock-server-api
+npm install
+npm run dev
 ```

@@ -9,4 +9,5 @@ export interface Mock {
   transactionId?: string;
   transactionTime?: string;
   active: boolean;
+  delay?: number;
 }
