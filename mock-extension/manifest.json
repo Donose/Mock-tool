@@ -6,12 +6,12 @@
     "declarativeNetRequest",
     "declarativeNetRequestWithHostAccess",
     "storage",
-     "declarativeNetRequestFeedback"
+     "declarativeNetRequestFeedback",
+     "tabs",
+     "alarms"
   ],
   "host_permissions": [
-    "https://localhost:4000/*",
-    "https://uat-public-ubiservices.ubi.com/*",
-    "https://public-ubiservices.ubi.com/*"
+   "<all_urls>"
   ],
   "background": {
     "service_worker": "background.js"

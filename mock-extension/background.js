@@ -1,70 +1,78 @@
-const MOCK_SERVER_URL = "https://localhost:4000/__active_mocks";
-const ALL_DOMAINS = {
-  uat: "https://uat-public-ubiservices.ubi.com",
-  prod: "https://public-ubiservices.ubi.com"
-};
+const PORT = 4000; //comeback to this 
+const ACTIVE_MOCKS_URL = 'https://localhost:4000/__active_mocks';
+const HOSTS = { uat: "uat-public-ubiservices.ubi.com", prod: "public-ubiservices.ubi.com" };
 
-let lastRulesHash = null;
+let lastRulesHash = "";
 
+
+// 2️⃣ Fetch active mocks, build & update DNR rules, store mockCount
 async function syncRules() {
-  const { mockingEnabled = true, redirectDomains = ["prod"] } = await chrome.storage.local.get();
+  const { mockingEnabled = true, redirectDomains = ["prod"] } =
+    await chrome.storage.local.get(["mockingEnabled", "redirectDomains"]);
+  
   if (!mockingEnabled) {
-    await chrome.declarativeNetRequest.updateDynamicRules({ removeRuleIds: Array.from({ length: 100 }, (_, i) => i + 1) });
+    // remove every dynamic rule (IDs 1–100 assumed)
+    await chrome.declarativeNetRequest.updateDynamicRules({
+      removeRuleIds: Array.from({ length: 100 }, (_, i) => i + 1)
+    });
+    await chrome.storage.local.set({ mockCount: 0 });
     return;
   }
 
   try {
-    const res = await fetch("https://localhost:4000/__active_mocks");
-    if (!res.ok) throw new Error("Server returned " + res.status);
+    const res = await fetch(ACTIVE_MOCKS_URL);
+    if (!res.ok) throw new Error(`Status ${res.status}`);
     const mocks = await res.json();
+    await chrome.storage.local.set({ mockCount: mocks.length });
 
-    const hosts = redirectDomains.map(d =>
-      d === "uat"
-        ? "uat-public-ubiservices.ubi.com"
-        : "public-ubiservices.ubi.com"
-    );
-
+    const hosts = redirectDomains.map(env => HOSTS[env] || HOSTS.prod);
     const hash = JSON.stringify({ mocks, hosts });
-    if (hash === lastRulesHash) return; // ✅ Do nothing if nothing changed
+    if (hash === lastRulesHash) return; // no change
     lastRulesHash = hash;
 
-    let rules = [];
-    let id = 1;
-    mocks.forEach(mock => {
-      if (!mock.url || !mock.method) return;
-      hosts.forEach(host => {
-        rules.push({
-          id: id++,
-          priority: 1,
-          action: {
-            type: "redirect",
-            redirect: { url: `https://localhost:4000${mock.url}` }
-          },
-          condition: {
-            urlFilter: `|https://${host}${mock.url}`, // "|" anchors to start of URL
-            resourceTypes: ["xmlhttprequest"],
-            requestMethods: [mock.method.toLowerCase()]
-          }
-        });
-      });
+    const addRules = mocks.flatMap((mock, i) => {
+      if (!mock.url || !mock.method) return [];
+      return hosts.map(host => ({
+        id: i + 1,
+        priority: 1,
+        action: { type: "redirect", redirect: { url: `https://localhost:4000${mock.url}` } },
+        condition: {
+          urlFilter: `|https://${host}${mock.url}`,
+          resourceTypes: ["xmlhttprequest"],
+          requestMethods: [mock.method.toLowerCase()]
+        }
+      }));
     });
 
+    // remove whatever’s already there, then add new
+    const existing = await chrome.declarativeNetRequest.getDynamicRules();
     await chrome.declarativeNetRequest.updateDynamicRules({
-      removeRuleIds: rules.map(r => r.id),
-      addRules: rules
+      removeRuleIds: existing.map(r => r.id),
+      addRules
     });
 
-    console.log("[MOCK] Updated", rules.length, "rules");
+    console.log(`[MOCK] Updated ${addRules.length} rules`);
   } catch (e) {
-    console.warn("[MOCK] Sync error:", e.message);
+    console.warn("[MOCK] Sync error:", e);
   }
 }
 
-
-chrome.runtime.onInstalled.addListener(syncRules);
-chrome.runtime.onStartup.addListener(syncRules);
-
-chrome.runtime.onMessage.addListener((msg) => {
-  if (msg.type === "syncNow") syncRules();
+// 3️⃣ Schedule both tasks on install/startup
+chrome.runtime.onInstalled.addListener(() => {
+  syncRules();
+  chrome.alarms.create("sync", { periodInMinutes: 0.1 });
 });
 
+chrome.runtime.onStartup.addListener(() => {
+  syncRules();
+});
+
+// 4️⃣ Alarm handler
+chrome.alarms.onAlarm.addListener(alarm => {
+  if (alarm.name === "sync") syncRules();
+});
+
+// 5️⃣ Manual “syncNow” trigger (from popup)
+chrome.runtime.onMessage.addListener((msg) => {
+  if (msg === "syncNow") syncRules();
+});

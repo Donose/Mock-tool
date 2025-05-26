@@ -1,47 +1,75 @@
+// popup.js
+
 document.addEventListener("DOMContentLoaded", () => {
-  const statusEl = document.getElementById("status");
-  const countEl = document.getElementById("mockCount");
+  const statusEl     = document.getElementById("status");
+  const countEl      = document.getElementById("mockCount");
   const globalToggle = document.getElementById("globalToggle");
-  const uatToggle = document.getElementById("uatToggle");
-  const prodToggle = document.getElementById("prodToggle");
+  const uatToggle    = document.getElementById("uatToggle");
+  const prodToggle   = document.getElementById("prodToggle");
 
-  // Load initial states
-  chrome.storage.local.get(["mockConnected", "mockCount", "redirectDomains", "mockingEnabled"], (result) => {
-    const connected = result.mockConnected === true;
-    statusEl.textContent = connected ? "✅ Connected" : "❌ Not connected";
-    statusEl.className = connected ? "connected" : "disconnected";
-    countEl.textContent = typeof result.mockCount === "number" ? result.mockCount : "–";
+  // Update mockCount and toggle UI
+  function refreshUI({ mockCount, redirectDomains = ["prod"], mockingEnabled = true }) {
+    countEl.textContent = Number.isInteger(mockCount) ? mockCount : "–";
+    const env = redirectDomains[0];
+    uatToggle.checked  = env === "uat";
+    prodToggle.checked = env === "prod";
+    globalToggle.checked = mockingEnabled !== false;
+  }
 
-    const activeEnv = result.redirectDomains?.[0] || "uat";
-    uatToggle.checked = activeEnv === "uat";
-    prodToggle.checked = activeEnv === "prod";
+  // Initial load
+  chrome.storage.local.get(
+    ["mockCount", "redirectDomains", "mockingEnabled"],
+    refreshUI
+  );
 
-    const enabled = result.mockingEnabled !== false; // default ON
-    globalToggle.checked = enabled;
+  // Live update when storage changes
+  chrome.storage.onChanged.addListener((changes) => {
+    const updated = {};
+    if (changes.mockCount)       updated.mockCount       = changes.mockCount.newValue;
+    if (changes.redirectDomains) updated.redirectDomains = changes.redirectDomains.newValue;
+    if (changes.mockingEnabled)  updated.mockingEnabled  = changes.mockingEnabled.newValue;
+    if (Object.keys(updated).length) refreshUI(updated);
   });
 
-  // Global ON/OFF toggle
-  globalToggle.addEventListener("change", () => {
-    const mockingEnabled = globalToggle.checked;
-    chrome.storage.local.set({ mockingEnabled });
-  });
-
-  // Environment toggles
-  uatToggle.addEventListener("change", () => {
-    chrome.storage.local.set({ redirectDomains: ["uat"] });
-  });
-
-  prodToggle.addEventListener("change", () => {
-    chrome.storage.local.set({ redirectDomains: ["prod"] });
-  });
-
-  // Auto-refresh UI every second
-  setInterval(() => {
-    chrome.storage.local.get(["mockConnected", "mockCount"], (result) => {
-      const connected = result.mockConnected === true;
-      statusEl.textContent = connected ? "✅ Connected" : "❌ Not connected";
-      statusEl.className = connected ? "connected" : "disconnected";
-      countEl.textContent = typeof result.mockCount === "number" ? result.mockCount : "–";
+  // When toggles change, write storage and trigger an immediate sync
+  function onToggleChange(key, value) {
+    chrome.storage.local.set({ [key]: value }, () => {
+      chrome.runtime.sendMessage("syncNow");
     });
-  }, 1000);
+  }
+
+  globalToggle.addEventListener("change", () =>
+    onToggleChange("mockingEnabled", globalToggle.checked)
+  );
+  uatToggle.addEventListener("change", () =>
+    onToggleChange("redirectDomains", ["uat"])
+  );
+  prodToggle.addEventListener("change", () =>
+    onToggleChange("redirectDomains", ["prod"])
+  );
+
+  async function checkHealth() {
+    // read the toggle state
+    const { mockingEnabled = true } = await chrome.storage.local.get("mockingEnabled");
+    if (!mockingEnabled) {
+      // don’t hit the server when disabled
+      statusEl.textContent = "⚪ Disabled";
+      statusEl.className   = "disconnected";
+      return;
+    }
+
+    try {
+      const res = await fetch("https://localhost:4000/__health");
+      const ok  = res.ok;
+      statusEl.textContent = ok ? "✅ Connected" : "❌ Not connected";
+      statusEl.className   = ok ? "connected"     : "disconnected";
+    } catch {
+      statusEl.textContent = "❌ Not connected";
+      statusEl.className   = "disconnected";
+    }
+  }
+
+  // run immediately and then every second
+  checkHealth();
+  setInterval(checkHealth, 3000);
 });
