@@ -219,6 +219,27 @@ app.get("/__health", (_, res) => res.send({ status: "ok", timestamp: new Date().
 const handleMock: RequestHandler = async (req, res, next) => {
   const found = mockRules.find(r => matchRule(r, req.path, req.method, req.query));
   const active = found && found.active ? found : undefined;
+  const duplicates = mockRules.filter(
+    r => r.endpoint === req.path
+  );
+  const activeDuplicates = duplicates.filter(r=> r.active);
+  
+ if (duplicates.length > 1) {
+  if (activeDuplicates.length > 1) {
+    console.log(
+      `⚠️  Multiple active mocks found for ${req.method} ${req.path}. Setting all but one to inactive.`
+    );
+    activeDuplicates.slice(1).forEach(dup => {
+      dup.active = false;
+    });
+    await saveMocks();
+  } else if (activeDuplicates.length === 1) {
+  } else {
+    console.log(
+      `⚠️  Multiple mocks found for ${req.method} ${req.path}, but none are active.`
+    );
+  }
+}
 
   if (active) {
     if (active.delay) await new Promise(r => setTimeout(r, active.delay));
@@ -230,9 +251,9 @@ const handleMock: RequestHandler = async (req, res, next) => {
   }
 
   if (found && !found.active) {
-    console.log(`▶︎ Mock for ${req.method} ${req.path} inactive → proxy`);
+    console.log(`▶︎ Mock for ${req.method} ${req.path} inactive → redirect to backend`);
   } else {
-    console.log(`▶︎ No mock for ${req.method} ${req.path} → proxy`);
+    console.log(`▶︎ No mock for ${req.method} ${req.path} → redirect to backend`);
   }
 
   next();
@@ -257,7 +278,7 @@ const startServer = async () => {
       console.log("🔒 Using devcert for localhost");
       ssl = await certificateFor("localhost");
     } catch (err: any) {
-      console.warn("⚠️  devcert unavailable – generating self‑signed", err.message);
+      console.warn("⚠️  devcert unavailable - generating self-signed", err.message);
       const pems = selfsigned.generate(
         [{ name: "commonName", value: "localhost" }],
         { days: 365 }

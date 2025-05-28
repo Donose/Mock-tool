@@ -9,7 +9,7 @@ import MockForm from "./components/MockForm";
 import MockList from "./components/MockList";
 import TemplatesPanel from "./components/TemplatesPanel";
 import ThirdPartyImport from "./components/ThirdPartyImport";
-import logo from "./cerberus-logo-4.png";
+import logo from "./assets/logoCerberus.png";
 
 const MockManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
