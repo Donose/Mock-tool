@@ -21,6 +21,7 @@ const MockManager = () => {
   const [templates, setTemplates] = useState<string[]>([]);
   const [showTemplates, setShowTemplates] = useState(true);
   const prevActiveCount = useRef<number | null>(null);
+  const manualDeactivationRef = useRef(false);
   const [formData, setFormData] = useState({
     method: "GET",
     endpoint: "",
@@ -46,8 +47,7 @@ const MockManager = () => {
       if (prevActiveCount.current === null) {
         prevActiveCount.current = newActiveCount;
       } else {
-        if (newActiveCount < prevActiveCount.current) {
-          console.log("Setting update message!", prevActiveCount.current, newActiveCount);
+        if (newActiveCount < prevActiveCount.current && !manualDeactivationRef.current) {
           setUpdateMessage(
             "Some duplicate mocks that had the same method and endpoint were deactivated. Please check your mocks!"
           );
@@ -55,6 +55,7 @@ const MockManager = () => {
         prevActiveCount.current = newActiveCount;
       }
       setMocks(data);
+      manualDeactivationRef.current = false;
     } catch (err) {
       console.error("Error fetching mocks:", err);
       alert("Could not load mocks from server—are you online?");
@@ -109,6 +110,9 @@ const MockManager = () => {
   };
 
   const toggleMockActive = async (id: string, currentlyActive: boolean) => {
+    if (currentlyActive) {
+      manualDeactivationRef.current = true;
+    }
     await fetch(`https://localhost:4000/__mocks/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
