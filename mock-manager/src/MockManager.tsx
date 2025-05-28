@@ -49,6 +49,10 @@ const MockManager = () => {
   useEffect(() => {
     fetchTemplates();
     loadMocks();
+    const interval = setInterval(() => {
+      loadMocks();
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
