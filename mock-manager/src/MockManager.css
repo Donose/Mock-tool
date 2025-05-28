@@ -592,6 +592,19 @@ button[type="submit"] {
   font-size: 0.97rem;
   border: 1px solid #29294a;
 }
+
+.update-message {
+  background: #fffbe6;
+  color: #856404;
+  border: 1px solid #ffe58f;
+  border-radius: 4px;
+  padding: 12px 18px;
+  margin: 16px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(255, 229, 143, 0.15);
+}
 /* Platform-specific styles */
 .button-ps4 {
   background-color: #003087; /* PS4 blue */

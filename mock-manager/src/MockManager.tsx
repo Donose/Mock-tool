@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./MockManager.css";
 import { generateTransactionTime } from "./utils/utils.ts";
 import { PLATFORM_TEMPLATES } from "./Template.ts";
@@ -17,8 +17,10 @@ const MockManager = () => {
   const [includeTimestamp, setIncludeTimestamp] = useState(false);
   const [thirdPartyMessage, setThirdPartyMessage] = useState<string | null>(null);
   const [templateMessage, setTemplateMessage] = useState<string | null>(null);
+  const [updateMessage, setUpdateMessage] = useState<string | null>(null);
   const [templates, setTemplates] = useState<string[]>([]);
   const [showTemplates, setShowTemplates] = useState(true);
+  const prevActiveCount = useRef<number | null>(null);
   const [formData, setFormData] = useState({
     method: "GET",
     endpoint: "",
@@ -39,6 +41,19 @@ const MockManager = () => {
       const res = await fetch("https://localhost:4000/__mocks");
       if (!res.ok) throw new Error("Failed to load mocks");
       const data: Mock[] = await res.json();
+      const newActiveCount = data.filter((m) => m.active).length;
+
+      if (prevActiveCount.current === null) {
+        prevActiveCount.current = newActiveCount;
+      } else {
+        if (newActiveCount < prevActiveCount.current) {
+          console.log("Setting update message!", prevActiveCount.current, newActiveCount);
+          setUpdateMessage(
+            "Some duplicate mocks that had the same method and endpoint were deactivated. Please check your mocks!"
+          );
+        }
+        prevActiveCount.current = newActiveCount;
+      }
       setMocks(data);
     } catch (err) {
       console.error("Error fetching mocks:", err);
@@ -68,6 +83,13 @@ const MockManager = () => {
       return () => clearTimeout(timer);
     }
   }, [templateMessage]);
+
+  useEffect(() => {
+    if (updateMessage) {
+      const timer = setTimeout(() => setUpdateMessage(null), 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [updateMessage]);
 
   const formatJsonField = (
     value: string,
@@ -339,10 +361,10 @@ const MockManager = () => {
           >
             Save as Template
           </button>
+          {updateMessage && <div className="update-message">{updateMessage}</div>}
         </div>
       )}
       {mocks.length === 0 && <p className="no-mocks">No mocks defined yet</p>}
-
       <MockList
         mocks={mocks}
         expandedId={expandedId}

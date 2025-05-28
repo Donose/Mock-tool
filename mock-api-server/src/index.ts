@@ -219,10 +219,10 @@ app.get("/__health", (_, res) => res.send({ status: "ok", timestamp: new Date().
 const handleMock: RequestHandler = async (req, res, next) => {
   const found = mockRules.find(r => matchRule(r, req.path, req.method, req.query));
   const active = found && found.active ? found : undefined;
-  const duplicates = mockRules.filter(
-    r => r.endpoint === req.path
-  );
-  const activeDuplicates = duplicates.filter(r=> r.active);
+ const duplicates = mockRules.filter(
+  r => r.endpoint === req.path && r.method === req.method
+);
+const activeDuplicates = duplicates.filter(r => r.active);
   
  if (duplicates.length > 1) {
   if (activeDuplicates.length > 1) {
