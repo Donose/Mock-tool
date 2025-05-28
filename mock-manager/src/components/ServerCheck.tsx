@@ -22,7 +22,7 @@ export const ServerCheck: React.FC = () => {
 
   useEffect(() => {
     checkServerStatus();
-    const interval = setInterval(checkServerStatus, 10000);
+    const interval = setInterval(checkServerStatus, 5000);
     return () => clearInterval(interval);
   }, []);
 
