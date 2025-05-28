@@ -9,7 +9,6 @@ import MockForm from "./components/MockForm";
 import MockList from "./components/MockList";
 import TemplatesPanel from "./components/TemplatesPanel";
 import ThirdPartyImport from "./components/ThirdPartyImport";
-import logo from "./assets/logoCerberus.png";
 
 const MockManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -58,7 +57,6 @@ const MockManager = () => {
       manualDeactivationRef.current = false;
     } catch (err) {
       console.error("Error fetching mocks:", err);
-      alert("Could not load mocks from server—are you online?");
     }
   };
 
@@ -290,7 +288,6 @@ const MockManager = () => {
         >
           API Documentation
         </a>
-        <img src={logo} className="logo" alt="Cerberus Logo" />
       </div>
       <ServerCheck />
       <div className="header-block">

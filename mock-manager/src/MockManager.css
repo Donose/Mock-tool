@@ -35,25 +35,6 @@ body {
   border: 1px solid var(--glass-border);
 }
 
-.logo {
-  display: block;
-  width: 120px;
-  height: auto;
-  margin: 0 auto 1.5rem;
-  filter: drop-shadow(0 0 12px var(--primary-accent));
-  animation: floatLogo 4s ease-in-out infinite;
-}
-
-@keyframes floatLogo {
-  0%,
-  100% {
-    transform: translateY(0);
-  }
-  50% {
-    transform: translateY(-6px);
-  }
-}
-
 /* === Headings === */
 h1,
 h3 {
@@ -593,6 +574,63 @@ button[type="submit"] {
   border: 1px solid #29294a;
 }
 
+.server-status-logo {
+  width: 100px;
+  height: 100px;
+  margin-right: 12px;
+  vertical-align: middle;
+  filter: grayscale(1) brightness(0.7);
+  transition: filter 0.3s;
+}
+
+@keyframes greenPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7), 0 0 16px 4px #4caf50;
+  }
+  20% {
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0.4), 0 0 20px 6px #4caf50;
+  }
+  40% {
+    box-shadow: 0 0 0 16px rgba(76, 175, 80, 0.25), 0 0 24px 8px #4caf50;
+  }
+  60% {
+    box-shadow: 0 0 0 20px rgba(76, 175, 80, 0.12), 0 0 28px 10px #4caf50;
+  }
+  80% {
+    box-shadow: 0 0 0 24px rgba(76, 175, 80, 0.05), 0 0 32px 12px #4caf50;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0), 0 0 16px 4px #4caf50;
+  }
+}
+
+.server-status-logo.pulse {
+  filter: brightness(1.1) saturate(1.5);
+  animation: greenPulse 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border-radius: 50%;
+}
+
+.server-status-logo.online {
+  filter: drop-shadow(0 0 6px #4caf50) brightness(1.1) saturate(2);
+}
+.server-status-logo.offline {
+  filter: drop-shadow(0 0 6px #f44336) grayscale(1) brightness(0.7);
+}
+.server-status-logo.checking {
+  filter: grayscale(0.5) brightness(1.2) opacity(0.7);
+}
+
+@keyframes floatLogo {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
 .update-message {
   background: #fffbe6;
   color: #856404;
