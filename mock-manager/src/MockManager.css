@@ -1,13 +1,57 @@
 /* === Global Layout === */
-.mock-manager {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 12px;
-  background: linear-gradient(to bottom right, #150024, #0a0014);
+/* === Logo & Theme Colors === */
+:root {
+  --primary-accent: #00ffcc;
+  --secondary-accent: #ff007a;
+  --highlight-accent: #555555;
+  --background-dark: #0a0a0f;
+  --panel-dark: #111118;
+  --panel-light: #1b1b2a;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-soft: rgba(255, 255, 255, 0.85);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: radial-gradient(ellipse at top center, #12121d, #08080e);
   font-family: "Segoe UI", sans-serif;
-  color: #ffffff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  color: var(--text-soft);
+  background-attachment: fixed;
+}
+
+.mock-manager {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1800px;
+  margin: 3rem auto;
+  padding: 2rem 3rem;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #0c0c14, #05050a);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--glass-border);
+}
+
+.logo {
+  display: block;
+  width: 120px;
+  height: auto;
+  margin: 0 auto 1.5rem;
+  filter: drop-shadow(0 0 12px var(--primary-accent));
+  animation: floatLogo 4s ease-in-out infinite;
+}
+
+@keyframes floatLogo {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
+  }
 }
 
 /* === Headings === */
@@ -637,6 +681,22 @@ button[type="submit"] {
   background-position: right 6px center;
   background-size: 10px;
   padding-right: 20px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px var(--primary-accent);
+}
+
+.mock-item:hover {
+  border-color: var(--highlight-accent);
+  box-shadow: 0 0 10px var(--highlight-accent);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 6px var(--primary-accent);
 }
 
 @media (max-width: 768px) {

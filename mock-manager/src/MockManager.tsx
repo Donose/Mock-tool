@@ -9,6 +9,7 @@ import MockForm from "./components/MockForm";
 import MockList from "./components/MockList";
 import TemplatesPanel from "./components/TemplatesPanel";
 import ThirdPartyImport from "./components/ThirdPartyImport";
+import logo from "./assets/logoCerberus.png";
 
 const MockManager = () => {
   const [editingId, setEditingId] = useState<string | null>(null);
@@ -259,10 +260,12 @@ const MockManager = () => {
         >
           API Documentation
         </a>
+        <img src={logo} className="logo" alt="Cerberus Logo" />
       </div>
       <ServerCheck />
-      <h1>Mock API Manager</h1>
-
+      <div className="header-block">
+        <h1>Mock API Manager</h1>
+      </div>
       <TemplatesPanel
         templates={templates}
         showTemplates={showTemplates}
