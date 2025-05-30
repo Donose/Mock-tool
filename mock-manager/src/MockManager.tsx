@@ -42,11 +42,15 @@ const MockManager = () => {
       if (!res.ok) throw new Error("Failed to load mocks");
       const data: Mock[] = await res.json();
       const newActiveCount = data.filter((m) => m.active).length;
-
+      const wasEmpptyBefore = prevActiveCount.current === 0 || prevActiveCount.current === null;
       if (prevActiveCount.current === null) {
         prevActiveCount.current = newActiveCount;
       } else {
-        if (newActiveCount < prevActiveCount.current && !manualDeactivationRef.current) {
+        if (
+          newActiveCount < prevActiveCount.current &&
+          !manualDeactivationRef.current &&
+          !wasEmpptyBefore
+        ) {
           setUpdateMessage(
             "Some duplicate mocks that had the same method and endpoint were deactivated. Please check your mocks!"
           );
