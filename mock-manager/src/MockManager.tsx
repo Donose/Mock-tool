@@ -21,6 +21,7 @@ const MockManager = () => {
   const [showTemplates, setShowTemplates] = useState(true);
   const prevActiveCount = useRef<number | null>(null);
   const manualDeactivationRef = useRef(false);
+  const manualDelete = useRef(false);
   const [formData, setFormData] = useState({
     method: "GET",
     endpoint: "",
@@ -42,14 +43,15 @@ const MockManager = () => {
       if (!res.ok) throw new Error("Failed to load mocks");
       const data: Mock[] = await res.json();
       const newActiveCount = data.filter((m) => m.active).length;
-      const wasEmpptyBefore = prevActiveCount.current === 0 || prevActiveCount.current === null;
+      const wasEmptyBefore = prevActiveCount.current === 0 || prevActiveCount.current === null;
       if (prevActiveCount.current === null) {
         prevActiveCount.current = newActiveCount;
       } else {
         if (
           newActiveCount < prevActiveCount.current &&
           !manualDeactivationRef.current &&
-          !wasEmpptyBefore
+          !manualDelete.current &&
+          !wasEmptyBefore
         ) {
           setUpdateMessage(
             "Some duplicate mocks that had the same method and endpoint were deactivated. Please check your mocks!"
@@ -58,6 +60,7 @@ const MockManager = () => {
         prevActiveCount.current = newActiveCount;
       }
       setMocks(data);
+      manualDelete.current = false;
       manualDeactivationRef.current = false;
     } catch (err) {
       console.error("Error fetching mocks:", err);
@@ -220,6 +223,7 @@ const MockManager = () => {
   };
 
   const deleteMock = async (id: string) => {
+    manualDelete.current = true;
     try {
       const res = await fetch(`https://localhost:4000/__mocks/${id}`, {
         method: "DELETE",
