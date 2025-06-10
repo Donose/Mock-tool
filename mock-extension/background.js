@@ -1,6 +1,6 @@
 const PORT = 4000; //comeback to this 
 const ACTIVE_MOCKS_URL = 'https://localhost:4000/__active_mocks';
-const HOSTS = { uat: "uat-public-ubiservices.ubi.com", prod: "public-ubiservices.ubi.com" };
+const HOSTS = { uat:[ "uat-public-ubiservices.ubi.com", "uat-connect.ubisoft.com"], prod: ["public-ubiservices.ubi.com" , "uat-connect.ubisoft.com"] };
 
 let lastRulesHash = "";
 
@@ -25,24 +25,25 @@ async function syncRules() {
     const mocks = await res.json();
     await chrome.storage.local.set({ mockCount: mocks.length });
 
-    const hosts = redirectDomains.map(env => HOSTS[env] || HOSTS.prod);
+const hosts = redirectDomains.flatMap(env => HOSTS[env] || []);
     const hash = JSON.stringify({ mocks, hosts });
     if (hash === lastRulesHash) return;
     lastRulesHash = hash;
 
-    const addRules = mocks.flatMap((mock, i) => {
-      if (!mock.url || !mock.method) return [];
-      return hosts.map(host => ({
-        id: i + 1,
-        priority: 1,
-        action: { type: "redirect", redirect: { url: `https://localhost:${PORT}${mock.url}` } },
-        condition: {
-          urlFilter: `|https://${host}${mock.url}`,
-          resourceTypes: ["xmlhttprequest"],
-          requestMethods: [mock.method.toLowerCase()]
-        }
-      }));
-    });
+    let ruleId = 1;
+const addRules = mocks.flatMap(mock => {
+  if (!mock.url || !mock.method) return [];
+  return hosts.map(host => ({
+    id: ruleId++,
+    priority: 1,
+    action: { type: "redirect", redirect: { url: `https://localhost:${PORT}${mock.url}` } },
+    condition: {
+      urlFilter: `|https://${host}${mock.url}`,
+      resourceTypes: ["xmlhttprequest"],
+      requestMethods: [mock.method.toLowerCase()]
+    }
+  }));
+});
 
     const existing = await chrome.declarativeNetRequest.getDynamicRules();
     await chrome.declarativeNetRequest.updateDynamicRules({
