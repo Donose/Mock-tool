@@ -286,9 +286,16 @@ const MockManager = () => {
 
   const handleClick = async (platform: string) => {
     await importTemplateMocks(platform);
-    setThirdPartyMessage(
-      `Imported ${platform} template mocks! Please add &&token = x=somestring as parameter in the URL! Modify GET from external body with the country/age/email you need.`
-    );
+
+    let msg = `Imported ${platform} template mocks! Please add &token = x=somestring as parameter in the URL! Modify GET from external body with the country/age/email you need.`;
+    if (platform === "XBX" || platform === "XB1") {
+      msg = `Imported ${platform} template mocks! For Xbox, please add &token = xbl3.0 x=somestring  and adjust the request body as needed for your test scenario.`;
+    }
+    if (platform === "PC") {
+      msg = `Imported ${platform} template mocks! THIS IS NOT WORKING YET!THIS WILL PROBABLY NEVER WORK [WIP].`;
+    }
+
+    setThirdPartyMessage(msg);
   };
 
   return (
