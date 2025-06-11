@@ -29,6 +29,7 @@ const MockManager = () => {
     headers: '{ "Content-Type": "application/json" }',
     body: "{}",
     delay: 0,
+    endpointUrl: "public-ubiservices.ubi.com",
   });
   const [mocks, setMocks] = useState<Mock[]>([]);
 
@@ -165,6 +166,7 @@ const MockManager = () => {
             headers: parseHeaders,
             body: parseBody,
             delay: formData.delay || 0,
+            endpointUrl: formData.endpointUrl,
           }),
         });
         setIncludeTimestamp(false);
@@ -176,6 +178,7 @@ const MockManager = () => {
           method: "GET",
           endpoint: "",
           status: 200,
+          endpointUrl: "public-ubiservices.ubi.com",
           headers: '{ "Content-Type": "application/json" }',
           body: "{}",
           delay: 0,
@@ -196,6 +199,7 @@ const MockManager = () => {
       headers: parseHeaders,
       body: parseBody,
       active: true,
+      endpointUrl: formData.endpointUrl || "public-ubiservices.ubi.com",
     };
 
     try {
@@ -211,6 +215,7 @@ const MockManager = () => {
         method: "GET",
         endpoint: "",
         status: 200,
+        endpointUrl: "public-ubiservices.ubi.com",
         headers: '{ "Content-Type": "application/json" }',
         body: "{}",
         delay: 0,
@@ -296,6 +301,14 @@ const MockManager = () => {
         >
           API Documentation
         </a>
+        <div className="separator"></div>
+        <a
+          href="https://uat-connect.ubisoft.com/v2/webauth/swagger/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WebAuth & WebAuth+ Public Docs
+        </a>
       </div>
       <ServerCheck />
       <div className="header-block">
@@ -336,6 +349,7 @@ const MockManager = () => {
             method: "GET",
             endpoint: "",
             status: 200,
+            endpointUrl: "public-ubiservices.ubi.com",
             headers: '{ "Content-Type": "application/json" }',
             body: "{}",
             delay: 0,
@@ -384,6 +398,7 @@ const MockManager = () => {
             method: mock.method,
             endpoint: mock.endpoint,
             status: mock.status,
+            endpointUrl: mock.endpointUrl ?? "public-ubiservices.ubi.com",
             headers: mock.headers ? JSON.stringify(mock.headers, null, 2) : "",
             body:
               typeof mock.body === "string"

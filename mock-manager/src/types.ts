@@ -10,4 +10,5 @@ export interface Mock {
   transactionTime?: string;
   active: boolean;
   delay?: number;
+  endpointUrl: string;
 }

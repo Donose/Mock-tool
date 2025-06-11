@@ -10,6 +10,7 @@ type Props = {
     status: number;
     headers: string;
     body: string;
+    endpointUrl?: string | any;
   };
   setFormData: React.Dispatch<React.SetStateAction<any>>;
   editingId: string | null;
@@ -34,6 +35,9 @@ const MockForm: React.FC<Props> = ({
   onCancelEdit,
   formatJsonField,
 }) => {
+  const KNOWN_ENDPOINTS = ["public-ubiservices.ubi.com", "connect.ubisoft.com"];
+  const isOtherSelected = !KNOWN_ENDPOINTS.includes(formData.endpointUrl);
+
   return (
     <form className="mock-form" onSubmit={onSubmit}>
       <h3>{editingId ? "Edit Mock" : "Add New Mock"}</h3>
@@ -118,20 +122,43 @@ const MockForm: React.FC<Props> = ({
         </div>
       </div>
 
+      {/* Combined Status + Endpoint block */}
       <div className="form-group-pair">
         <label className="form-label-column">Status Code:</label>
-        <div className="form-input-column">
+        <div className="form-input-column" style={{ maxWidth: "120px" }}>
           <input
             type="number"
             name="status"
             value={formData.status}
-            onChange={(e) =>
-              setFormData({
-                ...formData,
-                status: parseInt(e.target.value, 10),
-              })
-            }
+            onChange={(e) => setFormData({ ...formData, status: parseInt(e.target.value, 10) })}
           />
+        </div>
+
+        <label className="form-label-column">Endpoint URL:</label>
+        <div className="form-input-column">
+          <select
+            name="endpointUrl"
+            value={isOtherSelected ? "other" : formData.endpointUrl}
+            onChange={(e) => {
+              const val = e.target.value;
+              setFormData({ ...formData, endpointUrl: val === "other" ? "" : val });
+            }}
+          >
+            <option value="public-ubiservices.ubi.com">public-ubiservices.ubi.com</option>
+            <option value="connect.ubisoft.com">connect.ubisoft.com</option>
+            <option value="other">Other</option>
+          </select>
+
+          {isOtherSelected && (
+            <input
+              type="text"
+              name="endpointUrl"
+              placeholder="Full custom endpoint URL"
+              value={formData.endpointUrl}
+              onChange={(e) => setFormData({ ...formData, endpointUrl: e.target.value })}
+              style={{ marginLeft: "12px" }}
+            />
+          )}
         </div>
       </div>
 

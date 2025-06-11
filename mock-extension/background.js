@@ -1,11 +1,12 @@
-const PORT = 4000; //comeback to this 
+const PORT = 4000;
 const ACTIVE_MOCKS_URL = 'https://localhost:4000/__active_mocks';
-const HOSTS = { uat:[ "uat-public-ubiservices.ubi.com", "uat-connect.ubisoft.com"], prod: ["public-ubiservices.ubi.com" , "uat-connect.ubisoft.com"] };
+const HOSTS = {
+  uat: ["uat-public-ubiservices.ubi.com", "uat-connect.ubisoft.com"],
+  prod: ["public-ubiservices.ubi.com", "uat-connect.ubisoft.com"]
+};
 
 let lastRulesHash = "";
 
-
-// 2️⃣ Fetch active mocks, build & update DNR rules, store mockCount
 async function syncRules() {
   const { mockingEnabled = true, redirectDomains = ["prod"] } =
     await chrome.storage.local.get(["mockingEnabled", "redirectDomains"]);
@@ -17,7 +18,10 @@ async function syncRules() {
     await chrome.storage.local.set({ mockCount: 0 });
     return;
   }
-  const currentEnv = redirectDomains.map(env => env.toUpperCase()).join(", ");
+
+  const currentEnv = redirectDomains[0];
+  const prefix = currentEnv === "uat" ? "uat-" : "";
+
   try {
     const res = await fetch(ACTIVE_MOCKS_URL);
     if (!res.ok) throw new Error(`Status ${res.status}`);
@@ -25,25 +29,26 @@ async function syncRules() {
     const mocks = await res.json();
     await chrome.storage.local.set({ mockCount: mocks.length });
 
-const hosts = redirectDomains.flatMap(env => HOSTS[env] || []);
-    const hash = JSON.stringify({ mocks, hosts });
-    if (hash === lastRulesHash) return;
-    lastRulesHash = hash;
-
     let ruleId = 1;
-const addRules = mocks.flatMap(mock => {
-  if (!mock.url || !mock.method) return [];
-  return hosts.map(host => ({
-    id: ruleId++,
-    priority: 1,
-    action: { type: "redirect", redirect: { url: `https://localhost:${PORT}${mock.url}` } },
-    condition: {
-      urlFilter: `|https://${host}${mock.url}`,
-      resourceTypes: ["xmlhttprequest"],
-      requestMethods: [mock.method.toLowerCase()]
-    }
-  }));
-});
+    const endpointSummary = {};
+    const addRules = mocks.flatMap(mock => {
+      if (!mock.url || !mock.method || !mock.endpointUrl) return [];
+
+      const [mockPath] = mock.url.split("?");
+      const finalEndpoint = `${prefix}${mock.endpointUrl}`;
+      endpointSummary[finalEndpoint] = (endpointSummary[finalEndpoint] || 0) + 1;
+
+      return [{
+        id: ruleId++,
+        priority: 1,
+        action: { type: "redirect", redirect: { url: `https://localhost:${PORT}${mock.url}` } },
+        condition: {
+          urlFilter: `|https://${finalEndpoint}${mockPath}`,
+          resourceTypes: ["xmlhttprequest"],
+          requestMethods: [mock.method.toLowerCase()]
+        }
+      }];
+    });
 
     const existing = await chrome.declarativeNetRequest.getDynamicRules();
     await chrome.declarativeNetRequest.updateDynamicRules({
@@ -51,9 +56,8 @@ const addRules = mocks.flatMap(mock => {
       addRules
     });
 
-    console.log(`[MOCK] Updated ${addRules.length} rules`);
+    await chrome.storage.local.set({ endpointSummary });
 
-    // In-page toast via scripting.executeScript to ensure injection
     chrome.tabs.query({ active: true, currentWindow: true }, async tabs => {
       for (const tab of tabs) {
         if (!/^https?:/.test(tab.url)) continue;
@@ -62,7 +66,6 @@ const addRules = mocks.flatMap(mock => {
             target: { tabId: tab.id },
             func: (count, env) => {
               const toast = document.createElement('div');
-              //maybe extract this
               Object.assign(toast.style, {
                 position: 'fixed', bottom: '16px', right: '16px',
                 padding: '8px 12px', background: '#333', color: '#fff',
@@ -72,7 +75,7 @@ const addRules = mocks.flatMap(mock => {
               document.body.append(toast);
               setTimeout(() => toast.remove(), 3000);
             },
-            args: [mocks.length, currentEnv]
+            args: [mocks.length, currentEnv.toUpperCase()]
           });
         } catch (err) {
           console.warn('Toast injection failed for tab', tab.id, err);
@@ -84,7 +87,6 @@ const addRules = mocks.flatMap(mock => {
   }
 }
 
-// 3️⃣ Schedule both tasks on install/startup
 chrome.runtime.onInstalled.addListener(() => {
   syncRules();
   chrome.alarms.create("sync", { periodInMinutes: 0.1 });
@@ -94,12 +96,10 @@ chrome.runtime.onStartup.addListener(() => {
   syncRules();
 });
 
-// 4️⃣ Alarm handler
 chrome.alarms.onAlarm.addListener(alarm => {
   if (alarm.name === "sync") syncRules();
 });
 
-// 5️⃣ Manual “syncNow” trigger (from popup)
 chrome.runtime.onMessage.addListener((msg) => {
   if (msg === "syncNow") syncRules();
 });

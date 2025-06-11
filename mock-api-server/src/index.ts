@@ -52,6 +52,7 @@ interface MockRule {
   transactionTime?: string;
   active: boolean;
   delay?: number;
+  endpointUrl: string; 
 }
 
 let mockRules: MockRule[] = [];
@@ -81,9 +82,7 @@ function matchRule(
   method: string,
   query: any = {}
 ): boolean {
-  // guard against invalid entries
   if (!rule || typeof rule.method !== "string" || !rule.endpoint) return false;
-
   if (rule.method.toUpperCase() !== method.toUpperCase()) return false;
 
   const [rulePath, ruleQuery] = rule.endpoint.split("?");
@@ -102,7 +101,10 @@ function matchRule(
     for (const [k, v] of Object.entries(required)) {
       if (query[k] !== v) return false;
     }
+    // Ignore any extra query params in the request (like locale)
+    return true;
   }
+  // If the mock has no query, match any query string
   return true;
 }
 
@@ -204,9 +206,10 @@ app.get("/__active_mocks", (_, res) => {
           m.active &&
           typeof m.endpoint === "string" &&
           m.endpoint.startsWith("/") &&
-          typeof m.method === "string"
+          typeof m.method === "string" &&
+          typeof m.endpointUrl === "string"
       )
-      .map(m => ({ url: m.endpoint, method: m.method }))
+      .map(m => ({ url: m.endpoint, method: m.method, endpointUrl: m.endpointUrl }))
   );
 });
 
