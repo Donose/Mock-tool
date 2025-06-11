@@ -1,4 +1,5 @@
 import React from "react";
+import Messages from "./Messages.tsx";
 
 interface Props {
   onImport: (platform: string) => void;
@@ -28,7 +29,7 @@ const ThirdPartyImport: React.FC<Props> = ({ onImport, importMessage }) => {
         <button type="button" className="button-PC" onClick={() => onImport("PC")}>
           PC Xbox Link
         </button>
-        {importMessage && <div className="import-message">{importMessage}</div>}
+        <Messages message={importMessage} className="import-message" duration={100000} />
       </div>
     </form>
   );
