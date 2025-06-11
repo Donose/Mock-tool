@@ -18,7 +18,7 @@ const MockManager = () => {
   const [templateMessage, setTemplateMessage] = useState<string | null>(null);
   const [updateMessage, setUpdateMessage] = useState<string | null>(null);
   const [templates, setTemplates] = useState<string[]>([]);
-  const [showTemplates, setShowTemplates] = useState(true);
+  const [showTemplates, setShowTemplates] = useState(false);
   const prevActiveCount = useRef<number | null>(null);
   const manualDeactivationRef = useRef(false);
   const manualDelete = useRef(false);
