@@ -47,6 +47,7 @@ const MockList: React.FC<Props> = ({
               <option value={10000}>10s</option>
             </select>
             <span className={`method-badge method-${mock.method}`}>{mock.method}</span>
+            <span className="endpoint">{mock.endpointUrl}</span>
             <span className="endpoint">{mock.endpoint}</span>
             <span className={`status-code status-${Math.floor(mock.status / 100)}xx`}>
               {mock.status}

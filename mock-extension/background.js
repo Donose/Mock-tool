@@ -6,6 +6,8 @@ const HOSTS = {
 };
 
 let lastRulesHash = "";
+let lastMockCount = null;
+let lastEnv = null;
 
 async function syncRules() {
   const { mockingEnabled = true, redirectDomains = ["prod"] } =
@@ -58,32 +60,40 @@ async function syncRules() {
 
     await chrome.storage.local.set({ endpointSummary });
 
-    chrome.tabs.query({ active: true, currentWindow: true }, async tabs => {
-      for (const tab of tabs) {
-        if (!/^https?:/.test(tab.url)) continue;
-        try {
-          await chrome.scripting.executeScript({
-            target: { tabId: tab.id },
-            func: (count, env) => {
-              const toast = document.createElement('div');
-              Object.assign(toast.style, {
-                position: 'fixed', bottom: '16px', right: '16px',
-                padding: '8px 12px', background: '#333', color: '#fff',
-                borderRadius: '24px', zIndex: '2147483647', fontFamily: 'sans-serif',
-              });
-              toast.textContent = `Active mocks: ${count} On Environment: (${env})`;
-              document.body.append(toast);
-              setTimeout(() => toast.remove(), 3000);
-            },
-            args: [mocks.length, currentEnv.toUpperCase()]
-          });
-        } catch (err) {
-          console.warn('Toast injection failed for tab', tab.id, err);
-        }
+    const mockCountChanged = lastMockCount !== mocks.length;
+const envChanged = lastEnv !== currentEnv;
+
+if (mockCountChanged || envChanged) {
+  chrome.tabs.query({ active: true, currentWindow: true }, async tabs => {
+    for (const tab of tabs) {
+      if (!/^https?:/.test(tab.url)) continue;
+      try {
+        await chrome.scripting.executeScript({
+          target: { tabId: tab.id },
+          func: (count, env) => {
+            const toast = document.createElement('div');
+            Object.assign(toast.style, {
+              position: 'fixed', bottom: '16px', right: '16px',
+              padding: '8px 12px', background: '#333', color: '#fff',
+              borderRadius: '24px', zIndex: '2147483647', fontFamily: 'sans-serif',
+            });
+            toast.textContent = `Active mocks: ${count} On Environment: (${env})`;
+            document.body.append(toast);
+            setTimeout(() => toast.remove(), 3000);
+          },
+          args: [mocks.length, currentEnv.toUpperCase()]
+        });
+      } catch (err) {
+        console.warn('Toast injection failed for tab', tab.id, err);
       }
-    });
-  } catch (e) {
-    console.warn("[MOCK] Sync error:", e);
+    }
+  });
+  lastMockCount = mocks.length;
+  lastEnv = currentEnv;
+}
+  } catch (err) {
+    console.error("Failed to sync rules:", err);
+    await chrome.storage.local.set({ mockCount: 0 });
   }
 }
 

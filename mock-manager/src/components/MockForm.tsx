@@ -122,7 +122,6 @@ const MockForm: React.FC<Props> = ({
         </div>
       </div>
 
-      {/* Combined Status + Endpoint block */}
       <div className="form-group-pair">
         <label className="form-label-column">Status Code:</label>
         <div className="form-input-column" style={{ maxWidth: "120px" }}>
@@ -153,7 +152,7 @@ const MockForm: React.FC<Props> = ({
             <input
               type="text"
               name="endpointUrl"
-              placeholder="Full custom endpoint URL"
+              placeholder="ex:public-ubiservices.ubi.com"
               value={formData.endpointUrl}
               onChange={(e) => setFormData({ ...formData, endpointUrl: e.target.value })}
               style={{ marginLeft: "12px" }}

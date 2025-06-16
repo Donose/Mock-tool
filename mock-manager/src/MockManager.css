@@ -235,6 +235,15 @@ button[type="submit"] {
   font-weight: bold;
   text-transform: uppercase;
 }
+.endpoint {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 400;
+  word-break: break-all;
+}
 
 .status-code {
   color: #00ff99;
