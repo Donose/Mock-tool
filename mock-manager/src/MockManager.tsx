@@ -60,7 +60,8 @@ const MockManager = () => {
         }
         prevActiveCount.current = newActiveCount;
       }
-      setMocks(data);
+      const validMocks = data.filter((m) => m && typeof m.id === "string" && m.endpoint);
+      setMocks(validMocks);
       manualDelete.current = false;
       manualDeactivationRef.current = false;
     } catch (err) {
