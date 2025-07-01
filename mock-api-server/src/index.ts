@@ -150,7 +150,16 @@ app.post("/__templates/apply/:name", async (req, res) => {
   const file = path.join(TEMPLATES_DIR, `${safe}.json`);
   if (!existsSync(file)) return res.status(404).json({ error: "Template not found" });
   const data = await readFile(file, "utf-8");
-  mockRules = JSON.parse(data);
+  mockRules = JSON.parse(data).map((mock:any) => ({
+    ...mock,
+  id:crypto.randomUUID(),
+  }))
+  const ids = mockRules.map(m => m.id);
+  console.log("IDs after apply:", ids);
+  const uniqueIds = new Set(ids);
+  if (uniqueIds.size !== ids.length) {
+    console.error("DUPLICATE IDS DETECTED!");
+  }
   await saveMocks();
   res.json({ success: true });
 });
@@ -168,6 +177,9 @@ app.get("/__mocks", (_, res) => res.json(mockRules));
 
 app.post("/__mocks", async (req, res) => {
   const incoming: MockRule = { ...req.body, active: true };
+  if (!incoming.id || mockRules.some(r => r.id === incoming.id)) {
+    incoming.id = crypto.randomUUID();
+  }
   mockRules.push(incoming);
   await saveMocks();
   res.setHeader("Access-Control-Allow-Origin", "*");
