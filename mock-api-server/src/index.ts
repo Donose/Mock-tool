@@ -135,14 +135,35 @@ app.use(express.json());
 
 // -------- Templates CRUD --------
 app.get("/__templates", (_, res) => {
-  const files = fs.readdirSync(TEMPLATES_DIR).filter(f => f.endsWith(".json"));
-  res.json(files.map(f => f.replace(".json", "")));
+  function walk(dir: string, base = ""): Record<string, string[]> {
+    const result: Record<string, string[]> = {};
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        Object.assign(result, walk(path.join(dir, entry.name), path.join(base, entry.name)));
+      } else if (entry.isFile() && entry.name.endsWith(".json")) {
+        const folder = base;
+        if (!result[folder]) result[folder] = [];
+        result[folder].push(entry.name.replace(".json", ""));
+      }
+    }
+    return result;
+  }
+  res.json(walk(TEMPLATES_DIR));
 });
 
 app.post("/__templates/save/:name", async (req, res) => {
   const safe = sanitizeName(req.params.name);
   await writeFile(path.join(TEMPLATES_DIR, `${safe}.json`), JSON.stringify(req.body, null, 2));
   res.json({ success: true });
+});
+
+app.get("/__templates/:folder?/:name", async (req, res) => {
+  const folder = req.params.folder || "";
+  const name = req.params.name;
+  const file = path.join(TEMPLATES_DIR, folder, `${name}.json`);
+  if (!fs.existsSync(file)) return res.status(404).json({ error: "Template not found" });
+  const data = await fs.promises.readFile(file, "utf-8");
+  res.json(JSON.parse(data));
 });
 
 app.post("/__templates/apply/:name", async (req, res) => {

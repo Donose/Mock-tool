@@ -22,6 +22,7 @@ const MockManager = () => {
   const prevActiveCount = useRef<number | null>(null);
   const manualDeactivationRef = useRef(false);
   const manualDelete = useRef(false);
+  const [templateGroups, setTemplateGroups] = useState<{ [folder: string]: string[] }>({});
   const [formData, setFormData] = useState({
     method: "GET",
     endpoint: "",
@@ -35,7 +36,7 @@ const MockManager = () => {
 
   const fetchTemplates = async () => {
     const res = await fetch("https://localhost:4000/__templates");
-    setTemplates(await res.json());
+    setTemplateGroups(await res.json());
   };
 
   const loadMocks = async () => {
@@ -323,7 +324,7 @@ const MockManager = () => {
         <h1>Mock API Manager</h1>
       </div>
       <TemplatesPanel
-        templates={templates}
+        templateGroups={templateGroups || {}}
         showTemplates={showTemplates}
         toggleShowTemplates={() => setShowTemplates((prev) => !prev)}
         onApply={async (tpl) => {
