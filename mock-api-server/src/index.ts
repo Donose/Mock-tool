@@ -167,22 +167,30 @@ app.get("/__templates/:folder?/:name", async (req, res) => {
 });
 
 app.post("/__templates/apply/:name", async (req, res) => {
-  const safe = sanitizeName(req.params.name);
-  const file = path.join(TEMPLATES_DIR, `${safe}.json`);
-  if (!existsSync(file)) return res.status(404).json({ error: "Template not found" });
-  const data = await readFile(file, "utf-8");
-  mockRules = JSON.parse(data).map((mock:any) => ({
-    ...mock,
-  id:crypto.randomUUID(),
-  }))
-  const ids = mockRules.map(m => m.id);
-  console.log("IDs after apply:", ids);
-  const uniqueIds = new Set(ids);
-  if (uniqueIds.size !== ids.length) {
-    console.error("DUPLICATE IDS DETECTED!");
+  try {
+    const safe = sanitizeName(req.params.name);
+    const file = path.join(TEMPLATES_DIR, `${safe}.json`);
+    if (!existsSync(file)) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+
+    const templateMocks = JSON.parse(await readFile(file, "utf-8")).map(
+      (mock: any) => ({
+        ...mock,
+        id: crypto.randomUUID(),             
+      })
+    );
+    const key = (m: any) => `${m.method}|${m.endpoint}|${m.status}`;
+    const existing = new Map(mockRules.map(m => [key(m), m]));
+    for (const t of templateMocks) existing.set(key(t), t);
+    mockRules = Array.from(existing.values());
+
+    await saveMocks();
+    res.json({ success: true, added: templateMocks.length, total: mockRules.length });
+  } catch (err) {
+    console.error("Apply template error:", err);
+    res.status(500).json({ error: "Internal error applying template" });
   }
-  await saveMocks();
-  res.json({ success: true });
 });
 
 app.delete("/__templates/:name", (req, res) => {
