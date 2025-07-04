@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1cf4b407-f8c5-49d1-b55f-9704a15f99d4",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1019,
+      "httpCode": 400,
+      "message": "User is over age for country.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.526002Z",
+      "transactionId": "4b4cd923-b257-4149-8d71-57fbc5fc0463"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

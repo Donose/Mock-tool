@@ -1,0 +1,24 @@
+[
+  {
+    "id": "0a918f15-e29a-4e34-a7d0-d365b615e07e",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1020,
+      "httpCode": 400,
+      "message": "Account type is invalid.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.526127Z",
+      "transactionId": "7a067f6d-1e42-43ed-ba7f-32bfba1048c8"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

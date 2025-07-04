@@ -1,0 +1,24 @@
+[
+  {
+    "id": "eebd70f0-4c09-4096-a3b6-306ed670bbd3",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1006,
+      "httpCode": 400,
+      "message": "Country required.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.523992Z",
+      "transactionId": "fb37ddd5-bb0b-40ea-be38-3347f6cebb3d"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

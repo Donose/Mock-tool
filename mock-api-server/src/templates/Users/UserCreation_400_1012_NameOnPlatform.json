@@ -1,0 +1,24 @@
+[
+  {
+    "id": "f8eed149-c0ea-41fa-919b-ba8368d0d6da",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1012,
+      "httpCode": 400,
+      "message": "NameOnPlatform cannot be in password.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.524967Z",
+      "transactionId": "2ed9827b-d724-4a8d-91ce-23efe5314c5a"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "91129a38-ea71-440a-90e2-c369117c0cac",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 100,
+      "httpCode": 500,
+      "message": "Internal server error.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.528890Z",
+      "transactionId": "94f4eb8c-e16d-44f1-82ac-bdf077852f13"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

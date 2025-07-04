@@ -1,0 +1,24 @@
+[
+  {
+    "id": "99b247c8-9a78-44d3-8950-daba8a5137c2",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 100,
+      "httpCode": 500,
+      "message": "Internal server error.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.558914Z",
+      "transactionId": "24727551-bfad-439c-a28e-ab4034f70883"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

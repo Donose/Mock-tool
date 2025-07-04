@@ -1,0 +1,25 @@
+[
+  {
+    "id": "0682b4c4-5f74-4ecd-abdd-c1bb8a97a8f4",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Missing required field.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.037850Z",
+      "transactionId": "c06e9815-408c-42aa-b86e-a23daf358873"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

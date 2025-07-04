@@ -1,0 +1,25 @@
+[
+  {
+    "id": "038ff28c-9e1e-4314-a694-395f31c80462",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 100,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "An unexpected server error occurred.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.040435Z",
+      "transactionId": "b6d3085a-0820-4ab0-9bc1-dd733ed8ff8c"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

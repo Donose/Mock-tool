@@ -1,0 +1,24 @@
+[
+  {
+    "id": "edec314a-e3bd-4779-b59e-0a928f660519",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1206,
+      "httpCode": 400,
+      "message": "Legal optins key is required.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.527246Z",
+      "transactionId": "1badc498-2006-4da8-99a3-0b5cdb768e31"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

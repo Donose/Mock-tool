@@ -1,0 +1,25 @@
+[
+  {
+    "id": "379efc5c-2150-4d1d-be87-83aa015757d0",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 403,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 4,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Action not allowed for this account.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.038582Z",
+      "transactionId": "bb655740-7143-4c27-9c5d-e05d1df47278"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "969351d8-b557-4e5c-81bf-9c7bc1f7630e",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1013,
+      "httpCode": 400,
+      "message": "NameOnPlatform contains restricted words.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.525230Z",
+      "transactionId": "5391bae8-90fb-4646-ab6e-f1456407830e"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

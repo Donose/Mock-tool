@@ -1,0 +1,25 @@
+[
+  {
+    "id": "c972aae8-ff14-4559-b52e-5bd61a78d235",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 504,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 6,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Could not contact moderation server.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.040742Z",
+      "transactionId": "16a492e8-9808-4ca2-b49f-383b7573c2c3"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

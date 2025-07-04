@@ -1,0 +1,25 @@
+[
+  {
+    "id": "5a142e51-d1a5-4ff3-ad68-19ab27d6ff84",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1006,
+      "Field": "dateOfBirth",
+      "FieldValueSuggestion": "",
+      "Message": "Date of birth does not match age group.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.037543Z",
+      "transactionId": "a3fe752b-4cba-4694-8aa1-2c928441497b"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

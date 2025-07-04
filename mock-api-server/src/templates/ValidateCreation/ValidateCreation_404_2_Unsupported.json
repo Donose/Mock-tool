@@ -1,0 +1,25 @@
+[
+  {
+    "id": "f31ed543-0f8c-45cb-81ce-246d6d114fdb",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 404,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 2,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Unsupported API version.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.039573Z",
+      "transactionId": "381ae175-45ab-4cd3-a4b1-99b9be47b869"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

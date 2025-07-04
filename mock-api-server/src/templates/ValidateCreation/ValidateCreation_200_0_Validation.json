@@ -1,0 +1,25 @@
+[
+  {
+    "id": "2264cbb2-ed32-4fa2-8f8c-89490c1ccdbf",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 0,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Validation passed.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.036060Z",
+      "transactionId": "8b6d341c-f79c-4dea-9324-418d53b4de87"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

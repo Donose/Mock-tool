@@ -1,0 +1,24 @@
+[
+  {
+    "id": "9cee2fe7-908c-4702-9fa0-c69cfa3a41f8",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1,
+      "httpCode": 400,
+      "message": "Missing required parameter.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.520138Z",
+      "transactionId": "91062c57-c1e0-460e-8eff-9c9393af9b05"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "632144e4-817e-45d0-bbb5-832052dc5891",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1017,
+      "httpCode": 400,
+      "message": "Preferred language wrong format.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.525855Z",
+      "transactionId": "df0d5ec1-b093-4500-8a77-9ab9265bab26"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ca2c11b3-0222-4835-b473-f0ef29a667cf",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 504,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 6,
+      "httpCode": 504,
+      "message": "Third-party service not responding.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.529146Z",
+      "transactionId": "97a8499f-fe20-400f-9e39-5eca7da98748"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

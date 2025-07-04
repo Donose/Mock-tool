@@ -1,0 +1,25 @@
+[
+  {
+    "id": "a3c7c6dd-92d0-434b-b028-6e3b026bd441",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1005,
+      "Field": "country",
+      "FieldValueSuggestion": "US",
+      "Message": "Country code invalid or unsupported.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.037341Z",
+      "transactionId": "5d6f2e3b-b577-43ec-99f3-0471998c786b"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

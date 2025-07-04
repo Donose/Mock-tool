@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ec3dc683-f661-4ac9-a872-33e78ca4a242",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1100,
+      "httpCode": 429,
+      "message": "Rate limit exceeded for user.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.528467Z",
+      "transactionId": "0e44e6bc-efb7-443d-b942-5ed91d4808e9"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

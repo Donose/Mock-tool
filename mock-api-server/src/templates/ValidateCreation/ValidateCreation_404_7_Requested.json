@@ -1,0 +1,25 @@
+[
+  {
+    "id": "19b0e076-0966-4899-9db0-6a035e3f6d8e",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 404,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 7,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Requested resource not found.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.039722Z",
+      "transactionId": "48dea9d4-c469-4b40-b49f-188c90c3c255"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

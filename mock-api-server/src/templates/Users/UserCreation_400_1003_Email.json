@@ -1,0 +1,24 @@
+[
+  {
+    "id": "434b81d6-0d13-489e-b12b-91fc565ba1b4",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1003,
+      "httpCode": 400,
+      "message": "Email address already registered.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.521967Z",
+      "transactionId": "bd83f45f-2163-4d66-8084-959cc1ab02b8"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

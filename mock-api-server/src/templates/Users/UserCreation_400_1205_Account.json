@@ -1,0 +1,24 @@
+[
+  {
+    "id": "dc2b2baa-5ce5-4d04-84ec-afea0850bc5e",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1205,
+      "httpCode": 400,
+      "message": "Account for platform already linked.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.526709Z",
+      "transactionId": "fbe9d7a2-31c1-4120-a628-614fe871337f"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

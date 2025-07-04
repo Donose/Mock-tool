@@ -1,0 +1,25 @@
+[
+  {
+    "id": "befdb2cf-b7a8-4007-a351-87df9f39003a",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 403,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 4003,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Origin not allowed to access this service.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.039326Z",
+      "transactionId": "fc3f9a11-6e14-4715-aeed-0099ae734ab2"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

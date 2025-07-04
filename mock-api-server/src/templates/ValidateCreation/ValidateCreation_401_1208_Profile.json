@@ -1,0 +1,25 @@
+[
+  {
+    "id": "9811d1d9-9785-4a7d-bf73-3f20e42e3e0f",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1208,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Profile is not linked to an account.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.038229Z",
+      "transactionId": "3b568ba6-90fe-4269-9b16-cdcc480aae92"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]
