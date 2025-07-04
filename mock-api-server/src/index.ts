@@ -166,10 +166,11 @@ app.get("/__templates/:folder?/:name", async (req, res) => {
   res.json(JSON.parse(data));
 });
 
-app.post("/__templates/apply/:name", async (req, res) => {
+app.post("/__templates/apply/*", async (req, res) => {
   try {
-    const safe = sanitizeName(req.params.name);
-    const file = path.join(TEMPLATES_DIR, `${safe}.json`);
+    const relativePath = req.params[0]; 
+  const file = path.join(TEMPLATES_DIR, `${relativePath}.json`);
+    console.log("Looking for template file at:", file);
     if (!existsSync(file)) {
       return res.status(404).json({ error: "Template not found" });
     }

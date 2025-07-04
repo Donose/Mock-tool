@@ -327,20 +327,23 @@ const MockManager = () => {
         templateGroups={templateGroups || {}}
         showTemplates={showTemplates}
         toggleShowTemplates={() => setShowTemplates((prev) => !prev)}
-        onApply={async (tpl) => {
-          await fetch(`https://localhost:4000/__templates/apply/${encodeURIComponent(tpl)}`, {
+        onApply={async (tpl, folder) => {
+          const fullPath = folder ? `${folder}/${tpl}` : tpl;
+          await fetch(`https://localhost:4000/__templates/apply/${encodeURIComponent(fullPath)}`, {
             method: "POST",
           });
           setTemplateMessage(`Template "${tpl}" applied!`);
           const res = await fetch("https://localhost:4000/__mocks");
           setMocks(await res.json());
         }}
-        onDelete={async (tpl) => {
-          await fetch(`https://localhost:4000/__templates/${encodeURIComponent(tpl)}`, {
+        onDelete={async (tpl, folder) => {
+          const fullPath = folder ? `${folder}/${tpl}` : tpl;
+          await fetch(`https://localhost:4000/__templates/${encodeURIComponent(fullPath)}`, {
             method: "DELETE",
           });
           setTemplates(templates.filter((t) => t !== tpl));
           setTemplateMessage(`Template "${tpl}" deleted!`);
+          await fetchTemplates();
         }}
         message={templateMessage}
       />
