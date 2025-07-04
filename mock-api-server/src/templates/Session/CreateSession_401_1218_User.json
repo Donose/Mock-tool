@@ -1,0 +1,25 @@
+[
+  {
+    "id": "8db6e2d3-c456-47ec-8477-a7195c431aef",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 1218,
+      "httpCode": 401,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "User account pending deactivation.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.073846Z",
+      "transactionId": "741f7a6a-d00f-45ae-86bb-7ee8302b6b41"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

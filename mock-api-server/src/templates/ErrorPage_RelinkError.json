@@ -1,0 +1,33 @@
+[
+  {
+    "id": "7923a450-1612-4377-9ecc-f479222d5062",
+    "method": "POST",
+    "endpoint": "/v3/users/**/profiles",
+    "status": 403,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 1225,
+      "httpCode": 403,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "You cannot link a different profile id (12048956-f5a9-42c2-8192-d5cbd9a4656d) than the one initially registered (acca916d-38ee-4b19-af29-b5cc068ccfce) for the platform type switch",
+      "environment": "uat",
+      "additionalDetails": {
+        "initialProfile": {
+          "userId": "7cb7e972-7ad2-4eba-82b9-48d8936ba104",
+          "profileId": "acca916d-38ee-4b19-af29-b5cc068ccfce",
+          "platformType": "switch",
+          "idOnPlatform": "5fa4851a757e9b64",
+          "nameOnPlatform": "Ediq44"
+        }
+      },
+      "transactionTime": "2025-06-24T11:59:37.1729967Z",
+      "transactionId": "295f39fd-4963-4982-83bc-60c9b9cf93c0"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

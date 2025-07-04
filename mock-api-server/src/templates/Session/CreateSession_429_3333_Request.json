@@ -1,0 +1,25 @@
+[
+  {
+    "id": "56dc9d5f-61d9-4cce-b5a6-722de942e172",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 3333,
+      "httpCode": 429,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Request throttled due to overuse.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.074907Z",
+      "transactionId": "fe36a6ee-2fd5-43d8-9e67-1451a57fc32b"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

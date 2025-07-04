@@ -1,0 +1,25 @@
+[
+  {
+    "id": "064fd886-061c-4c83-8528-4c6708c729bd",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 307,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 0,
+      "httpCode": 307,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Redirect to another environment.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.068787Z",
+      "transactionId": "5c3a2415-e9ad-476f-9b24-a91a4a7f4842"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

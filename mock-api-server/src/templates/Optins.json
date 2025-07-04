@@ -1,0 +1,70 @@
+[
+  {
+    "id": "7f91df11-7090-4740-8c59-4f86e7424ed4",
+    "method": "GET",
+    "endpoint": "/v1/spaces/**/configs/usercontrols/globaloptins",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "optins": {
+        "ubisoftWebsitesAdsOptIn": {
+          "display": true,
+          "check": true,
+          "displayText": "Receive personalized communications about Ubisoft news, community, and offers through Uplay, games, Ubisoft apps and sites.",
+          "name": "Personalized content through Ubisoft apps and sites",
+          "description": "Allow Ubisoft to use your profile information to personalize the content in Ubisoft Connect, Ubisoft mobile apps and sites to match your gaming activity and preferences.",
+          "shortDescription": "Receive personalized communications about Ubisoft news, community, and offers through Uplay, games, Ubisoft apps and sites.",
+          "displayValues": {
+            "name": "Personalized content through Ubisoft apps and sites",
+            "description": "Allow Ubisoft to use your profile information to personalize the content in Ubisoft Connect, Ubisoft mobile apps and sites to match your gaming activity and preferences.",
+            "shortDescription": "Receive personalized communications about Ubisoft news, community, and offers through Uplay, games, Ubisoft apps and sites."
+          }
+        },
+        "communicationOptIn": {
+          "display": true,
+          "check": true,
+          "displayText": "Receive exclusive email newsletter content with offers and information about Ubisoft titles. I can unsubscribe at any time.",
+          "name": "Ubisoft newsletter",
+          "description": "Receive personalized news, event information (e.g., invitations to exclusive betas), community content and special offers about Ubisoft games and services by email.",
+          "shortDescription": "Receive exclusive email newsletter content with offers and information about Ubisoft titles. I can unsubscribe at any time.",
+          "displayValues": {
+            "name": "Ubisoft newsletter",
+            "description": "Receive personalized news, event information (e.g., invitations to exclusive betas), community content and special offers about Ubisoft games and services by email.",
+            "shortDescription": "Receive exclusive email newsletter content with offers and information about Ubisoft titles. I can unsubscribe at any time."
+          }
+        },
+        "mediaSharingOptIn": {
+          "display": true,
+          "check": true,
+          "displayText": "Tailor Ubisoft ads on external sites by allowing my data to be securely shared with select partners, for this purpose only.",
+          "name": "Ubisoft ads on our partners websites",
+          "description": "To enhance your browsing experience and stay informed on your favorite games, allow Ubisoft to share your personal data with partners to see Ubisoft personalized advertising on their apps and sites. The partners **won't be able to reuse this data** for their own advertising purposes.",
+          "shortDescription": "Tailor Ubisoft ads on external sites by allowing my data to be securely shared with select partners, for this purpose only.",
+          "displayValues": {
+            "name": "Ubisoft ads on our partners websites",
+            "description": "To enhance your browsing experience and stay informed on your favorite games, allow Ubisoft to share your personal data with partners to see Ubisoft personalized advertising on their apps and sites. The partners **won't be able to reuse this data** for their own advertising purposes.",
+            "shortDescription": "Tailor Ubisoft ads on external sites by allowing my data to be securely shared with select partners, for this purpose only."
+          }
+        },
+        "communicationThirdPartyOptIn": {
+          "display": true,
+          "check": false,
+          "displayText": "Share my personal and game data with select partners for marketing purposes.",
+          "name": "Ubisoft ads on our partners’ websites and data usage",
+          "description": "To see even more personalized ads, allow partners to **reuse your data for their own advertising purposes.**",
+          "shortDescription": "Share my personal and game data with select partners for marketing purposes.",
+          "displayValues": {
+            "name": "Ubisoft ads on our partners’ websites and data usage",
+            "description": "To see even more personalized ads, allow partners to **reuse your data for their own advertising purposes.**",
+            "shortDescription": "Share my personal and game data with select partners for marketing purposes."
+          }
+        }
+      }
+    },
+    "active": true,
+    "delay": 0,
+    "endpointUrl": "public-ubiservices.ubi.com"
+  }
+]
