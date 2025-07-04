@@ -78,7 +78,7 @@ const TemplatesPanel: React.FC<Props> = ({
                 onClick={() => toggleFolder(folder)}
               >
                 <span style={{ marginRight: 8 }}>{openFolders[folder] ? "▼" : "▶"}</span>
-                {folder || "Root"}
+                {folder || "Main Templates"}
               </div>
               {openFolders[folder] &&
                 templates.map((tpl) => {
