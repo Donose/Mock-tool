@@ -1,5 +1,6 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React from "react";
+import React, { useRef } from "react";
+import useSaveShortcut from "../hooks/Hook.Save";
 import "../MockManager.css";
 
 type Props = {
@@ -34,6 +35,21 @@ const MockForm: React.FC<Props> = ({
   onCancelEdit,
   formatJsonField,
 }) => {
+  const formRef = useRef<HTMLFormElement | null>(null);
+
+  useSaveShortcut({
+    onSave: async () => {
+      if (!formRef.current) return;
+      const f = formRef.current as any;
+      if (typeof f.requestSubmit === "function") {
+        f.requestSubmit();
+      } else {
+        f.submit();
+      }
+    },
+    preventDefault: true,
+    isDirty: () => true,
+  });
   return (
     <form className="mock-form" onSubmit={onSubmit}>
       <h3>{editingId ? "Edit Mock" : "Add New Mock"}</h3>
