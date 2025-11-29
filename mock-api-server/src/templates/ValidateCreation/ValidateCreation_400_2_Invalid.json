@@ -1,0 +1,25 @@
+[
+  {
+    "id": "250db3d1-eeed-46a6-96e2-c46e5d8adaac",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 2,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Invalid parameter format.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.037998Z",
+      "transactionId": "dea126eb-8476-4eb6-90e6-2c292bb27e9b"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "be4edbba-86bb-430f-b89d-245fea16abae",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 2,
+      "httpCode": 401,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Unsupported credential type.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.070549Z",
+      "transactionId": "0004ebcb-4595-446a-a62a-705e2b5efea9"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

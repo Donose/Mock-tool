@@ -1,0 +1,25 @@
+[
+  {
+    "id": "09f97851-e835-4db7-a3bd-39a2040f2c05",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 1216,
+      "httpCode": 401,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "User account locked.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.071671Z",
+      "transactionId": "398c3168-e1df-4f42-808a-34e53485f978"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

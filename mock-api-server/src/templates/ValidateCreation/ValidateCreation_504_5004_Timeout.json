@@ -1,0 +1,25 @@
+[
+  {
+    "id": "98913d2c-5eec-4e65-b07a-e4861c46fde1",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 504,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 5004,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Timeout while contacting downstream service.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.040873Z",
+      "transactionId": "1e0dae9f-7a7c-4152-b31b-526bf1f6f7ea"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

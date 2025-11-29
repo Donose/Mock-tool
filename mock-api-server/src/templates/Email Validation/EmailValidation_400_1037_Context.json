@@ -1,0 +1,24 @@
+[
+  {
+    "id": "1573a6b8-43f7-4fba-b403-cb63eae72e08",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1037,
+      "httpCode": 400,
+      "message": "Context required.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.557099Z",
+      "transactionId": "9e177b2f-4a36-4b42-b617-28b1a52d5ed9"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

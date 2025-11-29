@@ -1,0 +1,25 @@
+[
+  {
+    "id": "cf47bb84-29be-417d-a219-e4db0ae1a207",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 504,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 6,
+      "httpCode": 504,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Third-party server not responding.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.076203Z",
+      "transactionId": "c9546c97-f98d-46fc-a872-1d7e68c30b4e"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

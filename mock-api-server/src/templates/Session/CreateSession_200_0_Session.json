@@ -1,0 +1,25 @@
+[
+  {
+    "id": "628858a9-0feb-42d9-8bc7-26f48ec4bd63",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 0,
+      "httpCode": 200,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Session created successfully.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.067418Z",
+      "transactionId": "628be612-184e-4c03-a4ce-a6f398e24119"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

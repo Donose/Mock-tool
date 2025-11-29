@@ -1,0 +1,25 @@
+[
+  {
+    "id": "151a5147-c873-47b1-83df-5b23c88f5cff",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1003,
+      "Field": "email",
+      "FieldValueSuggestion": "",
+      "Message": "Email already in use.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.036939Z",
+      "transactionId": "722842eb-7bac-4d61-b985-54bfe9310735"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

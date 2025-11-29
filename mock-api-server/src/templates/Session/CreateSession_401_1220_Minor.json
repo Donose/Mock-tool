@@ -1,0 +1,25 @@
+[
+  {
+    "id": "08490674-41b3-491c-9bbf-ef0be1995b78",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 1220,
+      "httpCode": 401,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Minor account pending deactivation.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.074146Z",
+      "transactionId": "a967868b-c587-44c0-8ff4-5ebd7b788b21"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

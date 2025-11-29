@@ -4,7 +4,7 @@
 // • Looks for trusted mkcert files in ./certs first
 // • Falls back to `devcert` or an in‑memory self‑signed PEM pair
 // • Persists mocks in __mocks.json and lets Chrome‑extension front‑end
-//   read /__active_mocks every second.
+//   read /__active_mocks every 6 seconds.
 // ────────────────────────────────────────────────────────────
 
 import express, { RequestHandler } from "express";
@@ -31,7 +31,9 @@ const CERTS_DIR      = path.join(__dirname, "certs");
 const MKCERT_KEY     = path.join(CERTS_DIR, "localhost-key.pem");
 const MKCERT_CERT    = path.join(CERTS_DIR, "localhost.pem");
 
-if (!fs.existsSync(TEMPLATES_DIR)) fs.mkdirSync(TEMPLATES_DIR, { recursive: true });
+[TEMPLATES_DIR, CERTS_DIR].forEach(dir =>
+  fs.mkdirSync(dir, { recursive: true })
+);
 
 const sanitizeName = (name: string) =>
   name.replace(/[\\/:"*?<>|]+/g, "_").replace(/\s+/g, "_");
@@ -50,12 +52,13 @@ interface MockRule {
   transactionTime?: string;
   active: boolean;
   delay?: number;
+  endpointUrl: string; 
 }
 
 let mockRules: MockRule[] = [];
 
 // ------------------------------------------------------------
-// Proxy to real API (only reached when no mock matches)
+// Proxy to real API (only reached when no mock matches) //should remove|extension rules takes care of it
 // ------------------------------------------------------------
 const proxy = createProxyMiddleware({
   target: REAL_API_URL,
@@ -79,9 +82,7 @@ function matchRule(
   method: string,
   query: any = {}
 ): boolean {
-  // guard against invalid entries
   if (!rule || typeof rule.method !== "string" || !rule.endpoint) return false;
-
   if (rule.method.toUpperCase() !== method.toUpperCase()) return false;
 
   const [rulePath, ruleQuery] = rule.endpoint.split("?");
@@ -100,7 +101,10 @@ function matchRule(
     for (const [k, v] of Object.entries(required)) {
       if (query[k] !== v) return false;
     }
+    // Ignore any extra query params in the request (like locale)
+    return true;
   }
+  // If the mock has no query, match any query string
   return true;
 }
 
@@ -131,8 +135,20 @@ app.use(express.json());
 
 // -------- Templates CRUD --------
 app.get("/__templates", (_, res) => {
-  const files = fs.readdirSync(TEMPLATES_DIR).filter(f => f.endsWith(".json"));
-  res.json(files.map(f => f.replace(".json", "")));
+  function walk(dir: string, base = ""): Record<string, string[]> {
+    const result: Record<string, string[]> = {};
+    for (const entry of fs.readdirSync(dir, { withFileTypes: true })) {
+      if (entry.isDirectory()) {
+        Object.assign(result, walk(path.join(dir, entry.name), path.join(base, entry.name)));
+      } else if (entry.isFile() && entry.name.endsWith(".json")) {
+        const folder = base;
+        if (!result[folder]) result[folder] = [];
+        result[folder].push(entry.name.replace(".json", ""));
+      }
+    }
+    return result;
+  }
+  res.json(walk(TEMPLATES_DIR));
 });
 
 app.post("/__templates/save/:name", async (req, res) => {
@@ -141,14 +157,41 @@ app.post("/__templates/save/:name", async (req, res) => {
   res.json({ success: true });
 });
 
-app.post("/__templates/apply/:name", async (req, res) => {
-  const safe = sanitizeName(req.params.name);
-  const file = path.join(TEMPLATES_DIR, `${safe}.json`);
-  if (!existsSync(file)) return res.status(404).json({ error: "Template not found" });
-  const data = await readFile(file, "utf-8");
-  mockRules = JSON.parse(data);
-  await saveMocks();
-  res.json({ success: true });
+app.get("/__templates/:folder?/:name", async (req, res) => {
+  const folder = req.params.folder || "";
+  const name = req.params.name;
+  const file = path.join(TEMPLATES_DIR, folder, `${name}.json`);
+  if (!fs.existsSync(file)) return res.status(404).json({ error: "Template not found" });
+  const data = await fs.promises.readFile(file, "utf-8");
+  res.json(JSON.parse(data));
+});
+
+app.post("/__templates/apply/*", async (req, res) => {
+  try {
+    const relativePath = req.params[0]; 
+  const file = path.join(TEMPLATES_DIR, `${relativePath}.json`);
+    console.log("Looking for template file at:", file);
+    if (!existsSync(file)) {
+      return res.status(404).json({ error: "Template not found" });
+    }
+
+    const templateMocks = JSON.parse(await readFile(file, "utf-8")).map(
+      (mock: any) => ({
+        ...mock,
+        id: crypto.randomUUID(),             
+      })
+    );
+    const key = (m: any) => `${m.method}|${m.endpoint}|${m.status}`;
+    const existing = new Map(mockRules.map(m => [key(m), m]));
+    for (const t of templateMocks) existing.set(key(t), t);
+    mockRules = Array.from(existing.values());
+
+    await saveMocks();
+    res.json({ success: true, added: templateMocks.length, total: mockRules.length });
+  } catch (err) {
+    console.error("Apply template error:", err);
+    res.status(500).json({ error: "Internal error applying template" });
+  }
 });
 
 app.delete("/__templates/:name", (req, res) => {
@@ -164,6 +207,9 @@ app.get("/__mocks", (_, res) => res.json(mockRules));
 
 app.post("/__mocks", async (req, res) => {
   const incoming: MockRule = { ...req.body, active: true };
+  if (!incoming.id || mockRules.some(r => r.id === incoming.id)) {
+    incoming.id = crypto.randomUUID();
+  }
   mockRules.push(incoming);
   await saveMocks();
   res.setHeader("Access-Control-Allow-Origin", "*");
@@ -202,9 +248,10 @@ app.get("/__active_mocks", (_, res) => {
           m.active &&
           typeof m.endpoint === "string" &&
           m.endpoint.startsWith("/") &&
-          typeof m.method === "string"
+          typeof m.method === "string" &&
+          typeof m.endpointUrl === "string"
       )
-      .map(m => ({ url: m.endpoint, method: m.method }))
+      .map(m => ({ url: m.endpoint, method: m.method, endpointUrl: m.endpointUrl }))
   );
 });
 
@@ -217,6 +264,27 @@ app.get("/__health", (_, res) => res.send({ status: "ok", timestamp: new Date().
 const handleMock: RequestHandler = async (req, res, next) => {
   const found = mockRules.find(r => matchRule(r, req.path, req.method, req.query));
   const active = found && found.active ? found : undefined;
+ const duplicates = mockRules.filter(
+  r => r.endpoint === req.path && r.method === req.method
+);
+const activeDuplicates = duplicates.filter(r => r.active);
+  
+ if (duplicates.length > 1) {
+  if (activeDuplicates.length > 1) {
+    console.log(
+      `⚠️  Multiple active mocks found for ${req.method} ${req.path}. Setting all but one to inactive.`
+    );
+    activeDuplicates.slice(1).forEach(dup => {
+      dup.active = false;
+    });
+    await saveMocks();
+  } else if (activeDuplicates.length === 1) {
+  } else {
+    console.log(
+      `⚠️  Multiple mocks found for ${req.method} ${req.path}, but none are active.`
+    );
+  }
+}
 
   if (active) {
     if (active.delay) await new Promise(r => setTimeout(r, active.delay));
@@ -228,9 +296,9 @@ const handleMock: RequestHandler = async (req, res, next) => {
   }
 
   if (found && !found.active) {
-    console.log(`▶︎ Mock for ${req.method} ${req.path} inactive → proxy`);
+    console.log(`▶︎ Mock for ${req.method} ${req.path} inactive → redirect to backend`);
   } else {
-    console.log(`▶︎ No mock for ${req.method} ${req.path} → proxy`);
+    console.log(`▶︎ No mock for ${req.method} ${req.path} → redirect to backend`);
   }
 
   next();
@@ -255,7 +323,7 @@ const startServer = async () => {
       console.log("🔒 Using devcert for localhost");
       ssl = await certificateFor("localhost");
     } catch (err: any) {
-      console.warn("⚠️  devcert unavailable – generating self‑signed", err.message);
+      console.warn("⚠️  devcert unavailable - generating self-signed", err.message);
       const pems = selfsigned.generate(
         [{ name: "commonName", value: "localhost" }],
         { days: 365 }

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "af4bfb32-ee4f-4fe9-bff8-c2b96bbf7f34",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 404,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 7,
+      "httpCode": 404,
+      "message": "Requested resource not found.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.557897Z",
+      "transactionId": "f3dbe391-2dfb-4ca1-a4c7-caf531392f11"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,5 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useRef } from "react";
 import "./MockManager.css";
 import { generateTransactionTime } from "./utils/utils.ts";
 import { PLATFORM_TEMPLATES } from "./Template.ts";
@@ -16,8 +16,13 @@ const MockManager = () => {
   const [includeTimestamp, setIncludeTimestamp] = useState(false);
   const [thirdPartyMessage, setThirdPartyMessage] = useState<string | null>(null);
   const [templateMessage, setTemplateMessage] = useState<string | null>(null);
+  const [updateMessage, setUpdateMessage] = useState<string | null>(null);
   const [templates, setTemplates] = useState<string[]>([]);
-  const [showTemplates, setShowTemplates] = useState(true);
+  const [showTemplates, setShowTemplates] = useState(false);
+  const prevActiveCount = useRef<number | null>(null);
+  const manualDeactivationRef = useRef(false);
+  const manualDelete = useRef(false);
+  const [templateGroups, setTemplateGroups] = useState<{ [folder: string]: string[] }>({});
   const [formData, setFormData] = useState({
     method: "GET",
     endpoint: "",
@@ -25,12 +30,13 @@ const MockManager = () => {
     headers: '{ "Content-Type": "application/json" }',
     body: "{}",
     delay: 0,
+    endpointUrl: "public-ubiservices.ubi.com",
   });
   const [mocks, setMocks] = useState<Mock[]>([]);
 
   const fetchTemplates = async () => {
     const res = await fetch("https://localhost:4000/__templates");
-    setTemplates(await res.json());
+    setTemplateGroups(await res.json());
   };
 
   const loadMocks = async () => {
@@ -38,16 +44,39 @@ const MockManager = () => {
       const res = await fetch("https://localhost:4000/__mocks");
       if (!res.ok) throw new Error("Failed to load mocks");
       const data: Mock[] = await res.json();
-      setMocks(data);
+      const newActiveCount = data.filter((m) => m.active).length;
+      const wasEmptyBefore = prevActiveCount.current === 0 || prevActiveCount.current === null;
+      if (prevActiveCount.current === null) {
+        prevActiveCount.current = newActiveCount;
+      } else {
+        if (
+          newActiveCount < prevActiveCount.current &&
+          !manualDeactivationRef.current &&
+          !manualDelete.current &&
+          !wasEmptyBefore
+        ) {
+          setUpdateMessage(
+            "Some duplicate mocks that had the same method and endpoint were deactivated. Please check your mocks!"
+          );
+        }
+        prevActiveCount.current = newActiveCount;
+      }
+      const validMocks = data.filter((m) => m && typeof m.id === "string" && m.endpoint);
+      setMocks(validMocks);
+      manualDelete.current = false;
+      manualDeactivationRef.current = false;
     } catch (err) {
       console.error("Error fetching mocks:", err);
-      alert("Could not load mocks from server—are you online?");
     }
   };
 
   useEffect(() => {
     fetchTemplates();
     loadMocks();
+    const interval = setInterval(() => {
+      loadMocks();
+    }, 5000);
+    return () => clearInterval(interval);
   }, []);
 
   useEffect(() => {
@@ -63,6 +92,13 @@ const MockManager = () => {
       return () => clearTimeout(timer);
     }
   }, [templateMessage]);
+
+  useEffect(() => {
+    if (updateMessage) {
+      const timer = setTimeout(() => setUpdateMessage(null), 10000);
+      return () => clearTimeout(timer);
+    }
+  }, [updateMessage]);
 
   const formatJsonField = (
     value: string,
@@ -82,6 +118,9 @@ const MockManager = () => {
   };
 
   const toggleMockActive = async (id: string, currentlyActive: boolean) => {
+    if (currentlyActive) {
+      manualDeactivationRef.current = true;
+    }
     await fetch(`https://localhost:4000/__mocks/${id}`, {
       method: "PATCH",
       headers: { "Content-Type": "application/json" },
@@ -129,6 +168,7 @@ const MockManager = () => {
             headers: parseHeaders,
             body: parseBody,
             delay: formData.delay || 0,
+            endpointUrl: formData.endpointUrl,
           }),
         });
         setIncludeTimestamp(false);
@@ -140,6 +180,7 @@ const MockManager = () => {
           method: "GET",
           endpoint: "",
           status: 200,
+          endpointUrl: "public-ubiservices.ubi.com",
           headers: '{ "Content-Type": "application/json" }',
           body: "{}",
           delay: 0,
@@ -160,6 +201,7 @@ const MockManager = () => {
       headers: parseHeaders,
       body: parseBody,
       active: true,
+      endpointUrl: formData.endpointUrl || "public-ubiservices.ubi.com",
     };
 
     try {
@@ -175,6 +217,7 @@ const MockManager = () => {
         method: "GET",
         endpoint: "",
         status: 200,
+        endpointUrl: "public-ubiservices.ubi.com",
         headers: '{ "Content-Type": "application/json" }',
         body: "{}",
         delay: 0,
@@ -187,6 +230,7 @@ const MockManager = () => {
   };
 
   const deleteMock = async (id: string) => {
+    manualDelete.current = true;
     try {
       const res = await fetch(`https://localhost:4000/__mocks/${id}`, {
         method: "DELETE",
@@ -244,9 +288,16 @@ const MockManager = () => {
 
   const handleClick = async (platform: string) => {
     await importTemplateMocks(platform);
-    setThirdPartyMessage(
-      `Imported ${platform} template mocks! Please add &&token = x=somestring as parameter in the URL! Modify GET from external body with the country/age/email you need.`
-    );
+
+    let msg = `Imported ${platform} template mocks! Please add &token = x=somestring as parameter in the URL! Modify GET from external body with the country/age/email you need.`;
+    if (platform === "XBX" || platform === "XB1") {
+      msg = `Imported ${platform} template mocks! For Xbox, please add &token = xbl3.0 x=somestring  and adjust the request body as needed for your test scenario.`;
+    }
+    if (platform === "PC") {
+      msg = `Imported ${platform} template mocks! THIS IS NOT WORKING YET!THIS WILL PROBABLY NEVER WORK [WIP].`;
+    }
+
+    setThirdPartyMessage(msg);
   };
 
   return (
@@ -259,28 +310,40 @@ const MockManager = () => {
         >
           API Documentation
         </a>
+        <div className="separator"></div>
+        <a
+          href="https://uat-connect.ubisoft.com/v2/webauth/swagger/index.html"
+          target="_blank"
+          rel="noopener noreferrer"
+        >
+          WebAuth & WebAuth+ Public Docs
+        </a>
       </div>
       <ServerCheck />
-      <h1>Mock API Manager</h1>
-
+      <div className="header-block">
+        <h1>Mock API Manager</h1>
+      </div>
       <TemplatesPanel
-        templates={templates}
+        templateGroups={templateGroups || {}}
         showTemplates={showTemplates}
         toggleShowTemplates={() => setShowTemplates((prev) => !prev)}
-        onApply={async (tpl) => {
-          await fetch(`https://localhost:4000/__templates/apply/${encodeURIComponent(tpl)}`, {
+        onApply={async (tpl, folder) => {
+          const fullPath = folder ? `${folder}/${tpl}` : tpl;
+          await fetch(`https://localhost:4000/__templates/apply/${encodeURIComponent(fullPath)}`, {
             method: "POST",
           });
           setTemplateMessage(`Template "${tpl}" applied!`);
           const res = await fetch("https://localhost:4000/__mocks");
           setMocks(await res.json());
         }}
-        onDelete={async (tpl) => {
-          await fetch(`https://localhost:4000/__templates/${encodeURIComponent(tpl)}`, {
+        onDelete={async (tpl, folder) => {
+          const fullPath = folder ? `${folder}/${tpl}` : tpl;
+          await fetch(`https://localhost:4000/__templates/${encodeURIComponent(fullPath)}`, {
             method: "DELETE",
           });
           setTemplates(templates.filter((t) => t !== tpl));
           setTemplateMessage(`Template "${tpl}" deleted!`);
+          await fetchTemplates();
         }}
         message={templateMessage}
       />
@@ -298,6 +361,7 @@ const MockManager = () => {
             method: "GET",
             endpoint: "",
             status: 200,
+            endpointUrl: "public-ubiservices.ubi.com",
             headers: '{ "Content-Type": "application/json" }',
             body: "{}",
             delay: 0,
@@ -332,10 +396,10 @@ const MockManager = () => {
           >
             Save as Template
           </button>
+          {updateMessage && <div className="update-message">{updateMessage}</div>}
         </div>
       )}
       {mocks.length === 0 && <p className="no-mocks">No mocks defined yet</p>}
-
       <MockList
         mocks={mocks}
         expandedId={expandedId}
@@ -346,6 +410,7 @@ const MockManager = () => {
             method: mock.method,
             endpoint: mock.endpoint,
             status: mock.status,
+            endpointUrl: mock.endpointUrl ?? "public-ubiservices.ubi.com",
             headers: mock.headers ? JSON.stringify(mock.headers, null, 2) : "",
             body:
               typeof mock.body === "string"

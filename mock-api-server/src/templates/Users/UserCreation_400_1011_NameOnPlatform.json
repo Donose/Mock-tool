@@ -1,0 +1,24 @@
+[
+  {
+    "id": "ad733c24-51ae-4638-9d06-afad4a542687",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1011,
+      "httpCode": 400,
+      "message": "NameOnPlatform not available.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.524659Z",
+      "transactionId": "08266900-cd1a-4233-b907-780ce9312f5c"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "2ca4ce9b-df16-4aa4-8633-a28bb14a6eb1",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 2,
+      "httpCode": 400,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Invalid parameter.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.069659Z",
+      "transactionId": "09a26960-4b15-4f09-8cba-420ada432140"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

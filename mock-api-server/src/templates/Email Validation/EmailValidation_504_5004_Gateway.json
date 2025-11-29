@@ -1,0 +1,24 @@
+[
+  {
+    "id": "b967c2f6-249d-4922-b82b-80ad50176d40",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 504,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 5004,
+      "httpCode": 504,
+      "message": "Gateway timeout while contacting backend service.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.560238Z",
+      "transactionId": "eb745371-6607-4c3f-97b5-ed4c2a5b4e1b"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -90,6 +90,7 @@ npm run mock:https
    * macOS (Homebrew): `brew install mkcert` and `brew install nss`
    * Windows (Chocolatey): `choco install mkcert`
    * Linux: follow instructions at [https://github.com/FiloSottile/mkcert#installation](https://github.com/FiloSottile/mkcert#installation)
+   * Choco install might be blocked by IT so use the mkcert github link and download it manually
 
 2. **Create and trust a local CA**
 
@@ -132,4 +133,4 @@ npm run mock:https
 
 ---
 
-Feel free to list any other changes you need!
+

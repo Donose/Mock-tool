@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cacd82ce-366d-44c8-bc04-770a803a9a68",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 8888,
+      "httpCode": 500,
+      "message": "Gateway encountered an unexpected error.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.559326Z",
+      "transactionId": "0f8a93b8-33cb-444e-ba34-e7824053f749"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

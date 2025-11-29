@@ -1,0 +1,25 @@
+[
+  {
+    "id": "ad3f6519-aca7-451c-a5ab-3df6c0e23e49",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 401,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 3,
+      "httpCode": 401,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Invalid credentials.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.070864Z",
+      "transactionId": "6a3e3ce5-3206-4633-acb1-948155c3e0f2"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,25 @@
+[
+  {
+    "id": "b33b7cce-156e-4483-87a1-d9c0c6da9755",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 8888,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Gateway encountered an unexpected error.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.040588Z",
+      "transactionId": "183b7c6d-33f4-4c6e-828d-df05b8be76ef"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

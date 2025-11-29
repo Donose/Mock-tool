@@ -1,0 +1,25 @@
+[
+  {
+    "id": "4d16159e-88f0-4c15-9ff2-601da11dc67a",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 500,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 8888,
+      "httpCode": 500,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Gateway error communicating with backend service.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.075878Z",
+      "transactionId": "661806ce-a3ad-4698-9fb0-3765fda917d5"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,0 +1,24 @@
+[
+  {
+    "id": "9fa0b90e-94b0-47a2-9a5c-1d6f57bc1669",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1016,
+      "httpCode": 400,
+      "message": "User is underage for country.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.525681Z",
+      "transactionId": "05ef2bfc-a361-475d-be6c-7ff15ae48d3c"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

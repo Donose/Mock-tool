@@ -1,0 +1,25 @@
+[
+  {
+    "id": "3e8a2185-1a7d-4887-9df9-201fc6214acf",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1101,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Rate limit exceeded for IP.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.040072Z",
+      "transactionId": "38f7db69-ed49-4575-9657-5ed3d204c68f"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

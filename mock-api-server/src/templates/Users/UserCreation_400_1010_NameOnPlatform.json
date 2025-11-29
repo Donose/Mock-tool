@@ -1,0 +1,24 @@
+[
+  {
+    "id": "cfbeeeec-5974-4100-acd1-5dc4ab0bcf8e",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1010,
+      "httpCode": 400,
+      "message": "NameOnPlatform wrong format.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.524468Z",
+      "transactionId": "c2554bfb-7735-43f1-a0c2-7cb61d5e39dd"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

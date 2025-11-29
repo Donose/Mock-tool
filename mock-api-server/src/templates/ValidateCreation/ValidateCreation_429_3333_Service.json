@@ -1,0 +1,25 @@
+[
+  {
+    "id": "aa8ffaf8-a2e0-4584-b814-7d798d40c2c2",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 3333,
+      "Field": "",
+      "FieldValueSuggestion": "",
+      "Message": "Service temporarily throttled.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.040293Z",
+      "transactionId": "5a3e3e54-026c-42ad-8805-69b2000cc8b3"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

@@ -1,8 +1,11 @@
 import React, { useEffect, useState } from "react";
+import logo from "../assets/logoCerberus.png";
 import "../MockManager.css";
 
 export const ServerCheck: React.FC = () => {
   const [serverStatus, setServerStatus] = useState<"online" | "offline" | "checking">("checking");
+  const [pulse, setPulse] = useState(false);
+
   const checkServerStatus = async () => {
     setServerStatus("checking");
     try {
@@ -16,23 +19,27 @@ export const ServerCheck: React.FC = () => {
       setServerStatus("offline");
     }
   };
+
   useEffect(() => {
     checkServerStatus();
-    const interval = setInterval(() => {
-      checkServerStatus();
-    }, 10000);
+    const interval = setInterval(checkServerStatus, 5000);
     return () => clearInterval(interval);
   }, []);
 
+  const handleLogoClick = () => {
+    setPulse(true);
+    setTimeout(() => setPulse(false), 1000);
+    checkServerStatus();
+  };
+
   return (
     <div className="server-status-container">
-      <button onClick={checkServerStatus} className={`toggle-details-button ${serverStatus}`}>
-        {serverStatus === "checking"
-          ? "Checking Server..."
-          : serverStatus === "online"
-          ? "Server Online"
-          : "Server Offline "}
-      </button>
+      <img
+        src={logo}
+        alt="Server status"
+        className={`server-status-logo ${serverStatus} ${pulse ? "pulse" : ""}`}
+        onClick={handleLogoClick}
+      />
       {serverStatus === "offline" && (
         <div className="server-offline-message">
           <p>
@@ -40,7 +47,9 @@ export const ServerCheck: React.FC = () => {
             <br />
             Start it by running:
           </p>
-          <pre className="server-offline-pre">npm run dev</pre>
+          <pre className="server-offline-pre">
+            npm run dev or npm run mock:https if certs exists
+          </pre>
           <p>
             Inside the <code>mock-api-server</code> folder
           </p>

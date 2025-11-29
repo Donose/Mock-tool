@@ -1,0 +1,24 @@
+[
+  {
+    "id": "4268f5d2-01b3-4dc8-bb45-e2cd45468bb8",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1309,
+      "httpCode": 400,
+      "message": "Validation code is required.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.526406Z",
+      "transactionId": "493ba920-bc1c-432f-8627-a970afe262ec"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

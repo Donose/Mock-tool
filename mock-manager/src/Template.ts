@@ -37,6 +37,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         maskedPhone: "string",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
     {
       id: crypto.randomUUID(),
@@ -64,6 +65,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         email: "string@gmail.com",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
   ],
   PS5: [
@@ -102,6 +104,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         maskedPhone: "string",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
     {
       id: crypto.randomUUID(),
@@ -128,6 +131,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         dateOfBirth: "1992-05-23T00:00:00.0000000",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
   ],
   XBX: [
@@ -166,6 +170,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         maskedPhone: "string",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
     {
       id: crypto.randomUUID(),
@@ -193,6 +198,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         email: "string@gmail.com",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
   ],
   XB1: [
@@ -231,6 +237,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         maskedPhone: "string",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
     {
       id: crypto.randomUUID(),
@@ -258,6 +265,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         email: "string@gmail.com",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
   ],
   Switch: [
@@ -296,6 +304,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         maskedPhone: "string",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
     {
       id: crypto.randomUUID(),
@@ -323,6 +332,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         email: "string@gmail.com",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
   ],
   PC: [
@@ -361,6 +371,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         maskedPhone: "string",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
     {
       id: crypto.randomUUID(),
@@ -388,6 +399,7 @@ export const PLATFORM_TEMPLATES: Record<string, Mock[]> = {
         email: "string@gmail.com",
       },
       active: true,
+      endpointUrl: "public-ubiservices.ubi.com",
     },
   ],
 };

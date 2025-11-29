@@ -1,0 +1,24 @@
+[
+  {
+    "id": "26867c64-558b-40ca-bf6e-1e0a6c10eabb",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1002,
+      "httpCode": 400,
+      "message": "Email wrong format.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.556952Z",
+      "transactionId": "e0fa9e06-373d-4261-8ea5-bf389b6a535b"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

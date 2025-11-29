@@ -1,0 +1,25 @@
+[
+  {
+    "id": "9a62451d-c62d-47f8-83f1-6faf53344df2",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 504,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 5004,
+      "httpCode": 504,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Gateway timeout communicating with backend service.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.076464Z",
+      "transactionId": "f14091e9-f6f1-48e1-ab7e-e4d1055a080c"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

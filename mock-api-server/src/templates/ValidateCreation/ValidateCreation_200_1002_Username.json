@@ -1,0 +1,25 @@
+[
+  {
+    "id": "60d60512-3afe-4f58-bc14-9b58dfa7121f",
+    "flow": "ValidateCreation",
+    "method": "POST",
+    "endpoint": "/v3/users/validateCreation",
+    "status": 200,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "ErrorCode": 1002,
+      "Field": "nameOnPlatform",
+      "FieldValueSuggestion": "NewName123",
+      "Message": "Username contains prohibited content.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:18:25.036598Z",
+      "transactionId": "1bc2e617-7d3a-4ec6-9b2a-2d8116601e1c"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

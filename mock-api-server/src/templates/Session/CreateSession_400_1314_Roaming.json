@@ -1,0 +1,25 @@
+[
+  {
+    "id": "2d0b88c3-a3dc-464b-8986-c5b60ea0a1d5",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 1314,
+      "httpCode": 400,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Roaming profile id not found.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.070168Z",
+      "transactionId": "b450e017-585b-42dc-aa76-5642b5b4dcf5"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

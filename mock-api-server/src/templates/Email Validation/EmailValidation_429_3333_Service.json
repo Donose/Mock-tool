@@ -1,0 +1,24 @@
+[
+  {
+    "id": "995158ea-400b-4d29-8007-2cc48a514205",
+    "flow": "EmailValidationCode",
+    "method": "POST",
+    "endpoint": "/v3/users/validationCodes/email",
+    "status": 429,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 3333,
+      "httpCode": 429,
+      "message": "Service temporarily throttled.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:21:35.558516Z",
+      "transactionId": "b8e5835a-f751-48a6-8e9c-fbbaaebf40fc"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

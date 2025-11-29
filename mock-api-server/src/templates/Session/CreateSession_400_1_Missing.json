@@ -1,0 +1,25 @@
+[
+  {
+    "id": "4e6e324a-f57f-41c9-b0f1-583ef0bef518",
+    "method": "POST",
+    "endpoint": "/v3/profiles/sessions",
+    "status": 400,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "moreInfo": "",
+      "errorCode": 1,
+      "httpCode": 400,
+      "errorContext": "Shipyard.Profiles.Services",
+      "message": "Missing Ubi-AppId header.",
+      "environment": "uat",
+      "additionalDetails": {},
+      "transactionTime": "2025-07-04T07:41:53.069242Z",
+      "transactionId": "e5cf911a-5651-44bf-8af7-162ff8e36e7a"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]

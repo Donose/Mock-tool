@@ -1,13 +1,38 @@
 /* === Global Layout === */
-.mock-manager {
-  max-width: 900px;
-  margin: 2rem auto;
-  padding: 2rem;
-  border-radius: 12px;
-  background: linear-gradient(to bottom right, #150024, #0a0014);
+/* === Logo & Theme Colors === */
+:root {
+  --primary-accent: #00ffcc;
+  --secondary-accent: #ff007a;
+  --highlight-accent: #555555;
+  --background-dark: #0a0a0f;
+  --panel-dark: #111118;
+  --panel-light: #1b1b2a;
+  --glass-border: rgba(255, 255, 255, 0.08);
+  --text-soft: rgba(255, 255, 255, 0.85);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  background: radial-gradient(ellipse at top center, #12121d, #08080e);
   font-family: "Segoe UI", sans-serif;
-  color: #ffffff;
-  box-shadow: 0 0 20px rgba(0, 0, 0, 0.6);
+  color: var(--text-soft);
+  background-attachment: fixed;
+}
+
+.mock-manager {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  max-width: 1800px;
+  margin: 3rem auto;
+  padding: 2rem 3rem;
+  border-radius: 18px;
+  background: linear-gradient(145deg, #0c0c14, #05050a);
+  box-shadow: 0 0 60px rgba(0, 0, 0, 0.6);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--glass-border);
 }
 
 /* === Headings === */
@@ -209,6 +234,15 @@ button[type="submit"] {
   font-size: 0.8rem;
   font-weight: bold;
   text-transform: uppercase;
+}
+.endpoint {
+  padding: 0.3rem 0.7rem;
+  border-radius: 6px;
+  background-color: #333;
+  color: #fff;
+  font-size: 0.8rem;
+  font-weight: 400;
+  word-break: break-all;
 }
 
 .status-code {
@@ -548,6 +582,76 @@ button[type="submit"] {
   font-size: 0.97rem;
   border: 1px solid #29294a;
 }
+
+.server-status-logo {
+  width: 100px;
+  height: 100px;
+  margin-right: 12px;
+  vertical-align: middle;
+  filter: grayscale(1) brightness(0.7);
+  transition: filter 0.3s;
+}
+
+@keyframes greenPulse {
+  0% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0.7), 0 0 16px 4px #4caf50;
+  }
+  20% {
+    box-shadow: 0 0 0 8px rgba(76, 175, 80, 0.4), 0 0 20px 6px #4caf50;
+  }
+  40% {
+    box-shadow: 0 0 0 16px rgba(76, 175, 80, 0.25), 0 0 24px 8px #4caf50;
+  }
+  60% {
+    box-shadow: 0 0 0 20px rgba(76, 175, 80, 0.12), 0 0 28px 10px #4caf50;
+  }
+  80% {
+    box-shadow: 0 0 0 24px rgba(76, 175, 80, 0.05), 0 0 32px 12px #4caf50;
+  }
+  100% {
+    box-shadow: 0 0 0 0 rgba(76, 175, 80, 0), 0 0 16px 4px #4caf50;
+  }
+}
+
+.server-status-logo.pulse {
+  filter: brightness(1.1) saturate(1.5);
+  animation: greenPulse 1s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+  border-radius: 50%;
+}
+
+.server-status-logo.online {
+  filter: drop-shadow(0 0 6px #4caf50) brightness(1.1) saturate(2);
+}
+.server-status-logo.offline {
+  filter: drop-shadow(0 0 6px #f44336) grayscale(1) brightness(0.7);
+}
+.server-status-logo.checking {
+  filter: grayscale(0.5) brightness(1.2) opacity(0.7);
+}
+
+@keyframes floatLogo {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0);
+  }
+}
+.update-message {
+  background: #fffbe6;
+  color: #856404;
+  border: 1px solid #ffe58f;
+  border-radius: 4px;
+  padding: 12px 18px;
+  margin: 16px 0;
+  font-size: 1rem;
+  font-weight: 600;
+  text-align: center;
+  box-shadow: 0 2px 8px rgba(255, 229, 143, 0.15);
+}
 /* Platform-specific styles */
 .button-ps4 {
   background-color: #003087; /* PS4 blue */
@@ -637,6 +741,22 @@ button[type="submit"] {
   background-position: right 6px center;
   background-size: 10px;
   padding-right: 20px;
+}
+
+button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 0 16px var(--primary-accent);
+}
+
+.mock-item:hover {
+  border-color: var(--highlight-accent);
+  box-shadow: 0 0 10px var(--highlight-accent);
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  box-shadow: 0 0 6px var(--primary-accent);
 }
 
 @media (max-width: 768px) {

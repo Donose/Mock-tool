@@ -1,0 +1,24 @@
+[
+  {
+    "id": "90a80126-247e-4f93-b76b-13a7f2b020ac",
+    "flow": "UserCreation",
+    "method": "POST",
+    "endpoint": "/v3/users",
+    "status": 403,
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "errorCode": 1302,
+      "httpCode": 403,
+      "message": "Please re-authenticate.",
+      "environment": "uat",
+      "errorContext": "Shipyard.Users.Services",
+      "transactionTime": "2025-07-04T14:25:14.527741Z",
+      "transactionId": "b0662f68-4c72-4bce-9ebb-99c0df4da051"
+    },
+    "active": true,
+    "endpointUrl": "public-ubiservices.ubi.com",
+    "delay": 0
+  }
+]
